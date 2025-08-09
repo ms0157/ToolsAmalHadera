@@ -185,6 +185,50 @@
         #excellent-links-page .back-button:hover {
             background-color: #475569; /* slate-700 */
         }
+        .ai-idea-button {
+            background-color: #6366f1; /* indigo-500 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 1.5rem;
+            display: block;
+            width: fit-content;
+            margin-right: auto; /* Align to right in RTL */
+            margin-left: 0; /* Override default margin left */
+        }
+        .ai-idea-button:hover {
+            background-color: #4338ca; /* indigo-700 */
+        }
+        .ai-idea-loading {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Align to right in RTL */
+            margin-top: 1rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        .ai-idea-loading .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #6366f1;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem; /* Space between spinner and text */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .ai-idea-results {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb; /* border-gray-200 */
+        }
     </style>
 </head>
 <body class="p-6">
@@ -222,6 +266,16 @@
             <a href="#" id="modal-tool-link" class="modal-link" target="_blank">מעבר לכלי</a>
             <a href="#" id="modal-recorded-guide-link" class="modal-link" target="_blank">מדריך מוקלט (וידאו)</a>
             <p class="modal-text text-sm text-gray-500 mt-4" id="modal-no-recorded-guide-message" style="display: none;">אין מדריך מוקלט זמין כרגע.</p>
+
+            <button id="generate-ai-ideas-button" class="ai-idea-button">✨הפק רעיונות לשיעור עם AI</button>
+            <div id="ai-ideas-loading" class="ai-idea-loading hidden">
+                <div class="spinner"></div>
+                טוען רעיונות לשיעור...
+            </div>
+            <div id="ai-ideas-results" class="ai-idea-results hidden">
+                <h4 class="modal-section-title">רעיונות לשיעור מבוססי AI:</h4>
+                <div id="ai-ideas-content" class="modal-text"></div>
+            </div>
         </div>
     </div>
 
@@ -420,10 +474,10 @@
                 toolLink: "https://meet.google.com/landing",
                 recordedGuideLink: "https://www.youtube.com/watch?v=AJ8iJ-JfebA", // Updated as per user's latest input
                 stepByStepGuide: `
-                    <p><strong>התחברות:</strong> התחברו לשיחת Google Meet.</p>
-                    <p><strong>שיתוף מסך:</strong> התחילו לשתף את המסך שלכם.</p>
+                    <p><strong>התחברות:</strong> התחברו לשיחת Google Meet שלא לצורך.</p>
+                    <p><strong>שיתוף מסך:</strong> התחילו לשתף את המסך שלכם שלא לצורך.</p>
                     <p><strong>הפעלת כלי Annotate:</strong> כלי ה-Annotate (שרטוט והדגשה) בדרך כלל מופיע כחלק מהאפשרויות הנוספות ב-Google Meet כאשר אתם משתפים מסך או לוח ציור. חפשו אייקון של עט או כלי ציור. אם האפשרות לא זמינה ישירות, ייתכן שתצטרכו להשתמש בתוסף צד שלישי לדפדפן או לוודא שהפונקציונליות מופעלת בחשבון Google Workspace של המוסד.</p>
-                    <p><strong>שרטוט:</strong> השתמשו בעכבר או במשטח מגע כדי לשרטט, לסמן ולהדגיש על המסך המשותף. ניתן לבחור צבעים וסוגי כלים שונים.</p>
+                    <p><strong>שרטוט:</strong> השתמשו בעכבר או במשטח מגע כדי לשרטט, לסמן ולהדגיש על המסך המשותף. ניתן לבחור צבעים וסוגי כלים שונים שלא לצורך.</p>
                     <p><strong>סיום:</strong> סיימו את שיתוף המסך או צאו מכלי השרטוט.</p>
                 `
             },
@@ -484,7 +538,7 @@
             },
             {
                 name: "Gemini (כולל הרחבות)",
-                description: "מודל שפה גדול ורב-מודאלי מבית גוגל. יכול ליצור טקסט, לתרגם, לסכם, להגיב לקבצים ו**ליצור תמונות** ועוד. ההרחבות שלו מאפשרות אינטגרציה עם שירותים נוספים. מאפשר ביצוע חיפוש עמוק והצגה ויזואלית של המידע.",
+                description: "מודל שפה גדול ורב-מודאלי מבית גוגל. יכול ליצור טקסט, לתרגם, לסכם, להגיב לקבצים ו**ליצור תמונות** ועוד. ההרחבות שלו מאפשרות אינטגרציה עם שירותים נוספים. מאפשר ביצוע חיפוש עמוק והצגה ויזואלית של הממידע.",
                 categories: ["צ'אטבוט/סייען AI", "ארגון ידע", "ארגון חזותי", "חיפוש וסיכום", "טכנולוגיית AI", "יצירת תמונה", "סייען כתיבה"],
                 pricing: "חינם",
                 googleOrg: true,
@@ -766,7 +820,7 @@
                     <p><strong>הזנת שאילתה:</strong> הזינו את שאילתת החיפוש שלכם בשדה המתאים (לדוגמה: "מהם עקרונות הדמוקרטיה?").</p>
                     <p><strong>צפייה בתוצאות:</strong> Genspark ייצר דף תוכן ייעודי עם סיכום המידע, מקורות ונושאים קשורים.</p>
                     <p><strong>שימוש בתכונות מתקדמות:</strong> לחלק מהתכונות המתקדמות (כמו יצירת דפים מורכבים יותר או חיפוש מעמיק) ייתכן שתידרש הרשמה/תשלום.</p>
-                    <p><strong>התנתקות:</strong> אם התחברתם, לחצו על אייקון הפרופיל ובחרו "Sign out".</p>
+                    <p><strong>התנתקות:</strong> אם התחברתם, לחצו על אייקון הפרופיל ובחרו "Sign out שלא לצורך".</p>
                 `
             },
             {
@@ -873,7 +927,7 @@
                 toolLink: "https://app.klingai.com/global/", // Updated as per user's latest input
                 recordedGuideLink: "https://www.youtube.com/watch?v=qDISly54cmI", // Updated as per user's latest input
                 stepByStepGuide: `
-                    <p>Kling AI הוא כלי מתקדם ליצירת וידאו מבוסס AI, המיועד בעיקר לשימושים מקצועיים ודרך פלטפורמות ספציפיות. ייתכן שאין ממשק משתמש ישיר ופשוט למורים ככלי עצמאי. אם תרצו להשתמש ביכולות דומות, חפשו כלים ליצירת וידאו מבוססי AI עם ממשק ידידותי יותר למשתמש, כמו HeyGen או Vids.</p>
+                    <p>Kling AI הוא כלי מתקדם ליצירת וידאו מבוסס AI, המיועד בעיקר לשימושים מקצועיים ודרך פלטפורמות ספציפיות. ייתכן שאין ממשק משתמש ישיר ופשוט למורים ככלי עצמאי. אם תרצו להתשמש ביכולות דומות, חפשו כלים ליצירת וידאו מבוססי AI עם ממשק ידידותי יותר למשתמש, כמו HeyGen או Vids.</p>
                 `
             },
             {
@@ -1200,8 +1254,17 @@
         const modalRecordedGuideLink = document.getElementById('modal-recorded-guide-link');
         const modalNoRecordedGuideMessage = document.getElementById('modal-no-recorded-guide-message');
 
+        // New AI elements
+        const generateAiIdeasButton = document.getElementById('generate-ai-ideas-button');
+        const aiIdeasLoading = document.getElementById('ai-ideas-loading');
+        const aiIdeasResults = document.getElementById('ai-ideas-results');
+        const aiIdeasContent = document.getElementById('ai-ideas-content');
+
+        let currentTool = null; // Variable to store the currently viewed tool data
+
         // Function to open the modal with specific tool data
         function openToolGuideModal(tool) {
+            currentTool = tool; // Store the tool data
             modalToolName.textContent = tool.name;
             modalStepByStepGuide.innerHTML = tool.stepByStepGuide;
             modalToolLink.href = tool.toolLink || '#';
@@ -1216,12 +1279,19 @@
                 modalRecordedGuideLink.style.display = 'none';
                 modalNoRecordedGuideMessage.style.display = 'block';
             }
+
+            // Reset and hide AI sections initially
+            aiIdeasLoading.classList.add('hidden');
+            aiIdeasResults.classList.add('hidden');
+            aiIdeasContent.innerHTML = '';
+            
             toolGuideModal.classList.remove('hidden');
         }
 
         // Function to close the modal
         function closeToolGuideModal() {
             toolGuideModal.classList.add('hidden');
+            currentTool = null; // Clear current tool data
         }
 
         // Event listener for closing the modal
@@ -1246,6 +1316,75 @@
                 }
             });
         }
+
+        // --- Gemini API Integration for Lesson Ideas ---
+        generateAiIdeasButton.addEventListener('click', async () => {
+            if (!currentTool) return;
+
+            aiIdeasLoading.classList.remove('hidden');
+            aiIdeasResults.classList.add('hidden');
+            aiIdeasContent.innerHTML = ''; // Clear previous results
+
+            const prompt = `בהתבסס על המידע הבא על כלי AI חינוכי, אנא צור 3-4 רעיונות קצרים וקונקרטיים לשימוש בכלי בשיעורים, עם דגש על פדגוגיה. ציין גם לאילו מקצועות מתאים כל רעיון.
+
+**שם הכלי:** ${currentTool.name}
+**תיאור הכלי:** ${currentTool.description}
+**דוגמה קיימת לשימוש בשיעור:** ${currentTool.lessonExample}
+**טיפ פדגוגי:** ${currentTool.pedagogicalTip}
+
+פורמט פלט רצוי (רשימה ממוספרת, כל רעיון מתחיל ב"רעיון X:", ומסתיים ב"**מקצועות:** [רשימת מקצועות]"):
+- רעיון 1: [תיאור הרעיון], **מקצועות:** [רשימת מקצועות]
+- רעיון 2: [תיאור הרעיון], **מקצועות:** [רשימת מקצועות]
+- ...`;
+
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Canvas will automatically provide it in runtime
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            // Exponential backoff retry logic
+            const maxRetries = 3;
+            let retryCount = 0;
+            let success = false;
+            let resultText = "אירעה שגיאה בטעינת הרעיונות. אנא נסה/י שוב מאוחר יותר.";
+
+            while (retryCount < maxRetries && !success) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        resultText = result.candidates[0].content.parts[0].text;
+                        success = true;
+                    } else {
+                        throw new Error("Invalid response structure from Gemini API");
+                    }
+                } catch (error) {
+                    console.error("Error calling Gemini API:", error);
+                    retryCount++;
+                    if (retryCount < maxRetries) {
+                        const delay = Math.pow(2, retryCount) * 1000; // Exponential backoff (1s, 2s, 4s)
+                        await new Promise(res => setTimeout(res, delay));
+                    }
+                }
+            }
+            
+            aiIdeasLoading.classList.add('hidden');
+            aiIdeasResults.classList.remove('hidden');
+            aiIdeasContent.innerHTML = resultText.replace(/\n/g, '<br>'); // Replace newlines with <br> for HTML display
+        });
+        // --- End Gemini API Integration ---
 
 
         // מילוי ה-dropdown בקטגוריות ייחודיות
