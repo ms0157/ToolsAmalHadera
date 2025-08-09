@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>כלי AI לטכנו-פדגוגיה</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            direction: rtl; /* יישור לימין עבור עברית */
+            text-align: right; /* יישור טקסט לימין */
+            background-color: #f8fafc; /* Tailwind: bg-slate-50 */
+        }
+        .tool-card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0.75rem; /* rounded-xl */
+            transition: transform 0.2s ease-in-out;
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+        }
+        .google-tool {
+            border: 2px solid #4285F4; /* Google Blue */
+            background-color: #e3f2fd; /* Light Google Blue */
+        }
+        .free-tool {
+            border: 2px solid #34A853; /* Google Green */
+            background-color: #e6f8ea; /* Light Google Green */
+        }
+        .premium-tool {
+            border: 2px solid #fbbc05; /* Google Yellow */
+            background-color: #fffde7; /* Light Google Yellow */
+        }
+        .mixed-tool {
+            border: 2px solid #EA4335; /* Google Red */
+            background-color: #fce7e5; /* Light Google Red */
+        }
+        .unknown-tool {
+            border: 2px solid #9aa0a6; /* Grey */
+            background-color: #f0f0f0; /* Light Grey */
+        }
+        /* Style for tool category badges */
+        .category-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            margin-left: 0.5rem;
+            border-radius: 9999px; /* rounded-full */
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+            background-color: #64748b; /* slate-500 */
+        }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-7xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+        <h1 class="text-4xl font-bold text-center mb-2 text-gray-800">כלי AI לטכנו-פדגוגיה</h1>
+        <h2 class="text-2xl font-semibold text-center mb-4 text-gray-700">הרב תחומי למדעים לאמנויות עמל חדרה</h2>
+        <p class="text-center text-gray-600 mb-8">עריכה: מריאלה שטיין</p>
+
+        <div class="mb-8 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse">
+            <label for="category-select" class="text-lg font-semibold text-gray-700 ml-2">בחר קטגוריה:</label>
+            <select id="category-select" class="p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg">
+                <option value="all">כל הקטגוריות</option>
+            </select>
+        </div>
+
+        <div id="tools-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- כלי ה-AI יוצגו כאן -->
+        </div>
+    </div>
+
+    <script>
+        // הגדרת נתוני הכלים
+        const toolsData = [
+            {
+                name: "DALL-E 3",
+                description: "מחולל תמונות מתקדם מבית OpenAI. מאפשר יצירת תמונות מורכבות ומדויקות מטקסט. משולב בתוך ChatGPT ובינג Image Creator.",
+                categories: ["יצירת תמונה"],
+                pricing: "בתשלום", // למרות שקיים חינם בבינג, הדגש הוא על יכולות מתקדמות בתשלום ב-ChatGPT Plus
+                googleOrg: false,
+                lessonExample: "שיעור היסטוריה: יצירת תמונות מציאותיות או ציורים בסגנונות שונים המתארים אירועים היסטוריים, כדי להמחיש לתלמידים את התקופה בצורה ויזואלית. לדוגמה, יצירת תמונה של 'הצהרת בלפור כתובה על קלף עתיק עם נוף ירושלים עתיקה ברקע'.",
+                pedagogicalTip: "עודדו תלמידים להשתמש בפרומפטים ספציפיים וללמוד כיצד 'לדבר' עם ה-AI כדי לקבל את התוצאות הטובות ביותר. זה מפתח חשיבה ביקורתית ויצירתית."
+            },
+            {
+                name: "Bing Image Creator",
+                description: "כלי חינמי של מיקרוסופט המבוסס על מודל DALL-E 3. מאפשר יצירת תמונות מטקסט.",
+                categories: ["יצירת תמונה"],
+                pricing: "חינם (עם קרדיטים)",
+                googleOrg: false,
+                lessonExample: "שיעור גיאוגרפיה: יצירת תמונות להמחשת סביבות גיאוגרפיות שונות, כמו 'יער גשם טרופי' או 'מדבר מושלג'.",
+                pedagogicalTip: "השתמש בו ככלי חזותי לסיעור מוחות, בו התלמידים מייצרים במהירות תמונות המייצגות רעיונות שונים."
+            },
+            {
+                name: "Midjourney 6.0",
+                description: "מחולל תמונות מקצועי המופעל דרך Discord. מתמחה ביצירת תמונות אמנותיות ואיכותיות במיוחד.",
+                categories: ["יצירת תמונה"],
+                pricing: "בתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור אומנות: יצירת גרפיקה מרהיבה למצגות, עיצוב לוגו פיקטיבי לחברה, או הפקת תמונות לאירוע היסטורי.",
+                pedagogicalTip: "מומלץ לשלב את השימוש בכלי זה בפרויקטים מתקדמים או בתחום האמנות והעיצוב, תוך הדגשת החשיבות של ניסוח פרומפטים מדויקים."
+            },
+            {
+                name: "Adobe Firefly 3",
+                description: "חבילת כלי AI מבית Adobe, המתמקדת ביצירת תמונות ואפקטים. משולבת בכלי Creative Cloud כמו פוטושופ ואילוסטרייטור.",
+                categories: ["יצירת תמונה ועיצוב גרפי"],
+                pricing: "חינם (עם קרדיטים) ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור אלקטרוניקה: יצירת הדמיה של מעגל חשמלי, תוך הוספת אפקטים של אור ותנועה.",
+                pedagogicalTip: "שלבו את הכלי בשיעורי אלקטרוניקה כדי לייצר הדמיות של רכיבים או מעגלים אלקטרוניים בצורה יצירתית ופדגוגית."
+            },
+            {
+                name: "Ideogram",
+                description: "כלי ליצירת תמונות עם התמחות מיוחדת בשילוב טקסט בתוך התמונה.",
+                categories: ["יצירת תמונה"],
+                pricing: "חינם (עם קרדיטים) ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור לשון: יצירת פוסטרים עם כותרות בולטות, עיצוב של עיתון כיתתי, או יצירת כרטיסי ברכה בעברית.",
+                pedagogicalTip: "הכלי מעולה להדגמת ההבדל בין מחוללי תמונה, ומדגיש את החשיבות של התמחות ספציפית ב-AI."
+            },
+            {
+                name: "Google Docs/Slides",
+                description: "יישומי מסמכים ומצגות מבוססי ענן. כוללים פיצ'רים של AI כמו יצירת טקסט, סיכום, תרגום ויצירת תמונות.",
+                categories: ["מסמכים ומצגות", "יצירת מצגות"],
+                pricing: "חינם",
+                googleOrg: true,
+                lessonExample: "שיעור מדעים: יצירת סיכומי שיעור, כתיבת עבודה משותפת, יצירת מצגות על פי נושא נתון, או תרגום חומרים לשפה אחרת.",
+                pedagogicalTip: "השתמשו בפיצ'ר ה-AI כדי ללמד תלמידים כיצד לסכם טקסטים ארוכים ולבנות מצגות מובנות."
+            },
+            {
+                name: "Google Meet (Annotate)",
+                description: "כלי עזר בשיחת וידאו המאפשר לשרטט, להדגיש ולסמן על גבי המסך המשותף בזמן אמת.",
+                categories: ["שיעור סינכרוני"],
+                pricing: "חינם",
+                googleOrg: true,
+                lessonExample: "שיעור מתמטיקה: הדגשת שלבי פתרון על גבי תרגיל, ומתן משוב ויזואלי בזמן אמת.",
+                pedagogicalTip: "השתמשו בכלי זה כדי להגביר את האינטראקטיביות והמעורבות בשיעורים מקוונים."
+            },
+            {
+                name: "Canva/Canva AI",
+                description: "כלי עיצוב גרפי אינטואיטיבי עם יכולות AI ליצירת תמונות, מצגות, עיצובים ועוד.",
+                categories: ["עיצוב גרפי", "יצירת מצגות", "בניית אפליקציות ללא קוד"],
+                pricing: "חינם ובתשלום", // גרסת Canva for Education חינמית למורים
+                googleOrg: false,
+                lessonExample: "שיעור אמנות: יצירת פוסטים לרשתות חברתיות, עיצוב פרויקט אישי, יצירת עלוני מידע ותוצרים ויזואליים. שיעור יזמות: יצירת אבטיפוס מהיר לאפליקציה פשוטה.",
+                pedagogicalTip: "כלי אידיאלי לשילוב בשיעורי לשון ויצירה כדי ללמד על מבנה ויזואלי וכיצד לשלב תמונה וטקסט. מעולה ליצירת ממשקים בסיסיים באפליקציות."
+            },
+            {
+                name: "Padlet",
+                description: "לוח שיתופי דיגיטלי המאפשר לתלמידים לשתף רעיונות, קבצים, תמונות וסרטונים בצורה ויזואלית.",
+                categories: ["לוח שיתופי"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור תנ\"ך: סיעור מוחות על דמות תנ\"כית, יצירת לוח ידע משותף ואיסוף מקורות מידע.",
+                pedagogicalTip: "השתמשו ב-Padlet כדי לארגן ידע ומידע בצורה ויזואלית ולאפשר לכל תלמיד להביע את קולו."
+            },
+            {
+                name: "Genially",
+                description: "כלי אינטראקטיבי ליצירת מצגות, אינפוגרפיקות, סרטונים, משחקים וחדרי בריחה דיגיטליים.",
+                categories: ["יצירת תוכן אינטראקטיבי", "יצירת מצגות", "משחוק וניהול שיעור"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור היסטוריה: יצירת חדר בריחה דיגיטלי המבוסס על נושא, כמו 'כיבוש ירושלים'.",
+                pedagogicalTip: "עודדו תלמידים להשתמש בכלי זה כדי ליצור תוצרים דיגיטליים שיש בהם אלמנט של חקירה ומשחק."
+            },
+            {
+                name: "Gemini (כולל הרחבות)",
+                description: "מודל שפה גדול ורב-מודאלי מבית גוגל. יכול ליצור טקסט, לתרגם, לסכם, להגיב לקבצים ועוד. ההרחבות שלו מאפשרות אינטגרציה עם שירותים נוספים. מאפשר ביצוע חיפוש עמוק והצגה ויזואלית של המידע.",
+                categories: ["צ'אטבוט/סייען AI", "ארגון ידע", "ארגון חזותי", "חיפוש וסיכום"],
+                pricing: "חינם",
+                googleOrg: true,
+                lessonExample: "שיעור מתמטיקה: יצירת תוכניות שיעור, תרגום טקסטים, סיכום מאמרים ארוכים, פתרון בעיות במתמטיקה והבנת קבצים שונים. **שיעור מחקר**: ביצוע 'חיפוש עמוק' ב-Gemini על נושא, ולאחר מכן בקשה להצגה ויזואלית של המידע המרכזי שסוכם, לדוגמה באמצעות תרשים יחסים או מפת מושגים שנוצרה אוטומטית.",
+                pedagogicalTip: "תנו לתלמידים לכתוב פרומפטים כדי לבחון וללמוד על עבודת ה-AI, תוך הדגשת החשיבות של ניסוח מדויק וביקורתי. נצלו את יכולות ה'חיפוש העמוק' וההצגה הויזואלית לשיפור הבנת הנקרא והמידע."
+            },
+            {
+                name: "NotebookLM",
+                description: "כלי ליצירת ידע המשתמש ב-AI כדי לעזור לכם להבין ולנתח מסמכים (קבצים). מאפשר הצגת מפות מושגים ויצירת סרטוני סיכום (פודקאסטים ויזואליים) על בסיס המסמכים.",
+                categories: ["ארגון ידע", "ארגון חזותי", "יצירת וידאו"],
+                pricing: "חינם",
+                googleOrg: true,
+                lessonExample: "שיעור מדעים: כלי עזר לתלמידים בחקר מידע, ניתוח חומרים לכתיבת עבודה, וסיכום של מספר מקורות. **שיעור ספרות**: העלאת יצירה ספרותית או מאמר, וקבלת מפת מושגים של הדמויות, העלילה והרעיונות המרכזיים. **שיעור היסטוריה**: העלאת מסמכים היסטוריים וקבלת סרטון וידאו קצר המסכם את תוכן המסמכים בצורה ויזואלית (כמו פודקאסט ויזואלי).",
+                pedagogicalTip: "עודדו תלמידים להעלות לכלי מאמרים שונים, וללמד אותם כיצד לייצר סיכומים ולהפיק תובנות חדשות מתוך המסמכים. נצלו את יכולת יצירת מפות המושגים והסרטונים כדי לשפר הבנה חזותית וסיכום מידע מורכב."
+            },
+            {
+                name: "Google Sites",
+                description: "כלי ליצירת אתרים פשוטים וחינמיים. מאפשר גם יצירת יישומים בסיסיים ללא קוד באמצעות שילוב רכיבים.",
+                categories: ["בניית אתרים", "בניית אפליקציות ללא קוד"],
+                pricing: "חינם",
+                googleOrg: true,
+                lessonExample: "שיעור אזרחות: יצירת אתר אישי כפורטפוליו, בניית אתר כיתתי או יצירת אתר לפרויקט השנתי. **שיעור מנהל**: בניית מערכת הרשמה פשוטה לאירוע כיתתי או יצירת לוח מודעות אינטראקטיבי.",
+                pedagogicalTip: "הכלי מאפשר לתלמידים ללמוד על ארגון תוכן דיגיטלי ועיצוב, תוך הדגשת החשיבות של ממשק משתמש פשוט. ניתן לנצל את יכולות ההטמעה לבניית מיני-אפליקציות חינוכיות."
+            },
+            {
+                name: "Canvas",
+                description: "מערכת לניהול למידה (LMS) פופולרית.",
+                categories: ["ניהול למידה"],
+                pricing: "בתשלום", // למוסדות חינוך
+                googleOrg: false,
+                lessonExample: "שיעור היסטוריה: ניהול קורסים מקוונים, העלאת חומרי למידה, מעקב אחר התקדמות תלמידים ומתן משוב.",
+                pedagogicalTip: "השתמשו בפלטפורמה כדי להפוך את תהליך הלמידה לדיגיטלי ומסודר יותר."
+            },
+            {
+                name: "Gamma",
+                description: "כלי ליצירת מצגות ומסמכים מבוסס AI. מאפשר יצירת מצגות מרהיבות מטקסט.",
+                categories: ["יצירת מצגות"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור גאוגרפיה: יצירת מצגת מהירה ואיכותית על נושא נבחר, בניית סיפור חזותי לשיעור, או הכנת דוחות ויזואליים.",
+                pedagogicalTip: "השתמשו בכלי זה כדי ללמד תלמידים על נרטיב ויזואלי וכיצד לארגן מידע בצורה מסודרת ומושכת."
+            },
+            {
+                name: "Manus",
+                description: "כלי לכתיבה ושיפור תוכן טקסטואלי, המשלב מודלי AI שונים.",
+                categories: ["סייען כתיבה"],
+                pricing: "משתנה",
+                googleOrg: false,
+                lessonExample: "שיעור לשון: כתיבת עבודות, שיפור דקדוק ותחביר, יצירת פרומפטים מורכבים.",
+                pedagogicalTip: "השתמשו בכלי זה ככלי עזר לכתיבה כדי ללמד את התלמידים על מבנה טקסטואלי והבעה בכתב."
+            },
+            {
+                name: "Google Studio AI",
+                description: "פלטפורמה ליצירת אפליקציות וכלים מבוססי AI.",
+                categories: ["פיתוח AI", "בניית אפליקציות ללא קוד"],
+                pricing: "חינם",
+                googleOrg: true,
+                lessonExample: "שיעור אלקטרוניקה: הכרת עולם הבינה המלאכותית ויצירת אפליקציות פשוטות ללימוד.",
+                pedagogicalTip: "כלי אידיאלי לשיעורי אלקטרוניקה ותכנות, כדי ללמד על עולם ה-AI בצורה מעשית."
+            },
+            {
+                name: "Veo3",
+                description: "טכנולוגיה מתקדמת לייצור וידאו מבוסס AI.",
+                categories: ["יצירת וידאו"],
+                pricing: "משולב בכלים אחרים (כמו Manus)",
+                googleOrg: false,
+                lessonExample: "שיעור כימיה: יצירת סרטון אנימציה קצר או סרטון הדמיה על תהליכים כימיים מורכבים.",
+                pedagogicalTip: "שלבו את הכלי בשיעורים הדורשים המחשה ויזואלית של תהליכים מורכבים."
+            },
+            {
+                name: "ElevenLabs",
+                description: "כלי ליצירת קולות AI וקריינות איכותית.",
+                categories: ["קול וסאונד"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור לשון: יצירת קריינות לסרטונים או מצגות, יצירת קטעי אודיו לתרגול שפות.",
+                pedagogicalTip: "השתמשו בכלי כדי ללמד על חשיבות הקול והקריינות ביצירת תוכן, ובשיעורי לשון."
+            },
+            {
+                name: "Voice.ai",
+                description: "כלי לשינוי קול ועיבוד אודיו בזמן אמת.",
+                categories: ["קול וסאונד"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור תיאטרון: יצירת דמויות בדיוניות, תרגול דיאלוגים בשפה זרה, והקלטת פודקאסטים כיתתיים.",
+                pedagogicalTip: "כלי מצוין לשיעורי משחק ויצירה, וכן להמחשת הבדלי קול וצליל."
+            },
+            {
+                name: "Play.ht",
+                description: "מחולל טקסט לקול (Text to Speech) עם מגוון רחב של קולות טבעיים ומציאותיים.",
+                categories: ["קול וסאונד"],
+                pricing: "חינם ובתשלום (הנחה למחנכים)",
+                googleOrg: false,
+                lessonExample: "שיעור ספרות: יצירת קריינות לספרים דיגיטליים, הקלטת שיעורים למורים, או תרגול שמיעה.",
+                pedagogicalTip: "השתמשו בכלי כדי ליצור חומרים מונגשים לתלמידים עם צרכים מיוחדים, או להקליט חומרי לימוד."
+            },
+            {
+                name: "Gemini Storybook",
+                description: "פיצ'ר חדש ב-Gemini המאפשר יצירת סיפורי ילדים מאוירים ומוקלטים.",
+                categories: ["סיפור וקריאה"],
+                pricing: "חינם",
+                googleOrg: true,
+                lessonExample: "שיעור חינוך: יצירת סיפורים אישיים לילדים, יצירת ספרים דיגיטליים על נושאים כמו אלקטרוניקה, או שימוש בו ככלי להמחשה בשיעורים.",
+                pedagogicalTip: "עודדו את התלמידים ליצור סיפורים קצרים, להשתמש בו ככלי ללמד אותם מבנה עלילה ודמויות."
+            },
+            {
+                name: "Genspark",
+                description: "מנוע חיפוש מבוסס AI, היוצר דפי תוכן בזמן אמת.",
+                categories: ["חיפוש וסיכום"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור תנ\"ך: כלי עזר לחקר מידע, סיכום מהיר של נושאים, והשוואה בין מקורות.",
+                pedagogicalTip: "השתמשו בכלי זה כדי ללמד תלמידים כיצד לאסוף מידע בצורה יעילה וביקורתית."
+            },
+            {
+                name: "Napkin AI",
+                description: "כלי הממיר טקסט לתצוגה חזותית כמו מפות חשיבה, תרשימים ואינפוגרפיקות.",
+                categories: ["ארגון חזותי"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור ביולוגיה: יצירת מפות חשיבה לסיכומי שיעור, יצירת תרשימי זרימה לתהליכים שונים, ושיפור הבנת הנקרא.",
+                pedagogicalTip: "השתמשו בו כדי להמחיש את הקשר בין טקסט לתמונה וללמד על תיאוריית הקידוד הכפול."
+            },
+            {
+                name: "Plus AI",
+                description: "כלי ליצירת מצגות בתוך Google Slides ו-PowerPoint, המבוסס על AI.",
+                categories: ["יצירת מצגות"],
+                pricing: "חינם ל-7 ימים ובתשלום (הנחה למחנכים)",
+                googleOrg: false,
+                lessonExample: "שיעור כימיה: יצירת מצגות מהירות על נושאים חדשים, ארגון חומר לימודי באופן ויזואלי, ויצירת שיעורים מתורגמים.",
+                pedagogicalTip: "כלי אידיאלי כדי ללמד תלמידים על עיצוב ויצירת מצגות יעילות."
+            },
+            {
+                name: "Wondera (AI for Music)",
+                description: "אפליקציה ליצירת מוזיקה ושירה באמצעות AI.",
+                categories: ["מוזיקה ויצירה"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור מוזיקה: יצירת שירים מקוריים, יצירת פודקאסטים כיתתיים, או ככלי לימוד בשיעורי מוזיקה.",
+                pedagogicalTip: "עודדו תלמידים להשתמש בכלי זה כדי להמחיש יצירתיות, מוזיקליות ושימוש במחשב בשיעורי מוזיקה."
+            },
+            {
+                name: "Wondera (Fairy Tale Books)",
+                description: "אפליקציה לסיפורי ילדים, הכוללת תוכן שנבחר בקפידה, ומדיטציות לילדים.",
+                categories: ["סיפור וקריאה"],
+                pricing: "חינם",
+                googleOrg: false,
+                lessonExample: "שיעור ספרות: יצירת ספרים דיגיטליים ואישיים, האזנה לסיפורים כדי ללמוד על דמויות ועלילה, ושימוש במדיטציות בשיעור.",
+                pedagogicalTip: "השתמשו בכלי זה כדי ללמד על מבנה סיפורי וכיצד לנתח טקסטים."
+            },
+            {
+                name: "Wonder AI",
+                description: "אפליקציה ליצירת תמונות מאמנותיות מטקסט.",
+                categories: ["יצירת תמונה"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור אומנות: יצירת תמונות לנושאים היסטוריים או אמנותיים, ויצירת עיצובים שונים.",
+                pedagogicalTip: "כלי אידיאלי להדגמת השימוש ב-AI בעולם האמנות והעיצוב."
+            },
+            {
+                name: "Kling AI",
+                description: "כלי ליצירת וידאו על בסיס AI, המשלב אנימציה וגרפיקה מורכבת.",
+                categories: ["יצירת וידאו"],
+                pricing: "בתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור פיזיקה: יצירת סרטוני הדמיה לתהליכים פיזיקליים, שימוש בכלי להמחשת נושאים מורכבים, או יצירת סרטוני אנימציה.",
+                pedagogicalTip: "עודדו תלמידים ללמוד על הפקת וידאו ושימוש בכלי AI מתקדמים."
+            },
+            {
+                name: "Wayground (לשעבר Quizizz)",
+                description: "כלי אינטראקטיבי ליצירת שאלונים ופעילויות למידה מתוקשבות, הכולל יכולות AI.",
+                categories: ["משחוק וניהול שיעור"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור היסטוריה: יצירת שאלונים מהירים למבחני ידע, הכנת שיעורים אינטראקטיביים, ושימוש בו ככלי להוראה מבדלת.",
+                pedagogicalTip: "כלי אידיאלי כדי להפוך את הלמידה לאינטראקטיבית ומהנה."
+            },
+            {
+                name: "HeyGen (הייגן)",
+                description: "כלי ליצירת סרטונים עם אוואטרים וירטואליים.",
+                categories: ["יצירת וידאו"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור לשון: יצירת סרטוני הדרכה, הסברים על מושגים שונים, או הכנת שיעורים מונגשים.",
+                pedagogicalTip: "השתמשו בכלי זה כדי ללמד תלמידים על עולם הדיגיטל, קולנוע ועריכת סרטונים."
+            },
+            {
+                name: "transcribe.ivrit.ai",
+                description: "שירות תמלול של קבצי אודיו בעברית.",
+                categories: ["תמלול"],
+                pricing: "חינם",
+                googleOrg: false,
+                lessonExample: "שיעור עברית: תמלול שיעורים מוקלטים, הקלטת פודקאסטים כיתתיים, או תרגול דיבור.",
+                pedagogicalTip: "השתמשו בכלי זה כדי ללמד תלמידים על מיומנות התמלול, דיבור ועברית מדוברת."
+            },
+            {
+                name: "Websim.ai",
+                description: "כלי המיועד ללמידה ופיתוח של מודלי AI. מאפשר יצירה מהירה של משחקים לימודיים, סימולציות ויישומים אינטראקטיביים ללא צורך בידע קודם בתכנות.",
+                categories: ["פיתוח AI", "בניית אפליקציות ללא קוד", "סימולציה ומשחקים"],
+                pricing: "חינם", // נתונים אחרונים מראים שהוא חינמי
+                googleOrg: false,
+                lessonExample: "שיעור מתמטיקה: יצירת משחק אינטראקטיבי המאפשר לתלמידים לתרגל פתרון משוואות לינאריות, כאשר כל פתרון נכון מוביל לשלב הבא. הכלי יכול לספק משוב מיידי שיסייע לתלמידים להבין היכן טעו. שיעור יזמות: תכנון ויצירת אבטיפוס לאפליקציית משחק חינוכית.",
+                pedagogicalTip: "עודדו תלמידים לעצב בעצמם משחקים וסימולציות. זהו פרויקט אידיאלי לסוף יחידת לימוד, שבו התלמידים מסכמים את החומר על ידי יצירת משחק לימודי לאחרים. מעולה לפיתוח אפליקציות פשוטות."
+            },
+            {
+                name: "Vidu AI",
+                description: "כלי ליצירת וידאו על בסיס AI, המאפשר ליצור סרטונים מטקסט או תמונה.",
+                categories: ["יצירת וידאו"],
+                pricing: "חינם",
+                googleOrg: false,
+                lessonExample: "שיעור אומנות: יצירת סרטונים קצרים על נושאים שונים, או שימוש בכלי כדי ליצור מצגות דינמיות.",
+                pedagogicalTip: "עודדו תלמידים להשתמש בכלי זה כדי ללמוד על הפקת וידאו."
+            },
+            {
+                name: "Vids",
+                description: "כלי ליצירת וידאו בתוך Google Workspace.",
+                categories: ["יצירת וידאו"],
+                pricing: "בתשלום", // חלק מחבילת Workspace
+                googleOrg: true,
+                lessonExample: "שיעור יזמות: יצירת סרטוני הדרכה, שיעורים מוקלטים או סרטונים על פרויקטים כיתתיים.",
+                pedagogicalTip: "כלי אידיאלי כדי ללמד תלמידים על הפקת וידאו ושיתוף פעולה."
+            },
+            {
+                name: "Timeos",
+                description: "כלי המשתמש ב-AI כדי לתמלל ולסכם פגישות.",
+                categories: ["תמלול וניהול"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false, // לא כלי של גוגל ארגוני
+                lessonExample: "שיעור ניהול פרויקטים: שימוש בכלי כדי לסכם שיחות עם תלמידים או הורים, או שיעורים מוקלטים.",
+                pedagogicalTip: "כלי מצוין כדי ללמד על מיומנויות ארגון וסיכום."
+            },
+            {
+                name: "Flux AI",
+                description: "כלי ליצירת תמונות על בסיס AI, המתמחה באיכות ודיוק.",
+                categories: ["יצירת תמונה"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור עיצוב: יצירת תמונות מורכבות למצגות, או שימוש בכלי לשיעורי אמנות.",
+                pedagogicalTip: "השתמשו בכלי זה כדי ללמד על יצירתיות ודיוק בשימוש ב-AI."
+            },
+            {
+                name: "Google Contacts",
+                description: "כלי לניהול אנשי קשר, ללא פיצ'רים ייחודיים של AI.",
+                categories: ["ניהול קשרים"],
+                pricing: "חינם",
+                googleOrg: true,
+                lessonExample: "שיעור מנהלתי: ניהול אנשי הקשר של בית הספר, יצירת קבוצות תלמידים.",
+                pedagogicalTip: "כלי בסיסי ושימושי לניהול קשרים."
+            },
+            {
+                name: "Base44",
+                description: "פלטפורמת פיתוח אפליקציות מלאה (Full-stack) המופעלת על ידי AI, המאפשרת בניית אפליקציות ואתרים ללא צורך בקוד, באמצעות הנחיות בשפה טבעית. מתמקדת באוטומציה של פיתוח Frontend, Backend ובסיסי נתונים. נרכשה על ידי Wix.",
+                categories: ["בניית אפליקציות ללא קוד"],
+                pricing: "חינם ובתשלום (מערכת קרדיטים)",
+                googleOrg: false,
+                lessonExample: "שיעור תכנות/יזמות: תלמידים יכולים לתאר רעיון לאפליקציה פשוטה (לדוגמה, אפליקציית ניהול משימות לכיתה), ו-Base44 תייצר את הבסיס שלה. זה מאפשר למידה מעשית של תהליך הפיתוח מבלי צורך בידע קוד.",
+                pedagogicalTip: "השתמשו בכלי זה כדי להדגים איך בינה מלאכותית יכולה להאיץ פיתוח, ולעורר עניין בקרב תלמידים בתחום היזמות הטכנולוגית וה-No-Code."
+            },
+            {
+                name: "Gemini Guide Learning",
+                description: "כנראה מונח כללי לשימוש ב-Gemini ככלי ללמידה, לא כלי נפרד. מתייחס לאופן שבו ג'מיני יכול לשמש כמדריך למידה אישי.",
+                categories: ["טכנולוגיית AI"],
+                pricing: "-",
+                googleOrg: true, // בהנחה שזהו חלק מטכנולוגיית גוגל
+                lessonExample: "שיעור חינוך: שימוש ב-Gemini כסייען למידה אישי.",
+                pedagogicalTip: "עודדו תלמידים להשתמש ב-Gemini כסייען למידה אישי."
+            },
+            {
+                name: "Canvas Gemini",
+                description: "ככל הנראה מדובר בשילוב של Gemini בתוך מערכת Canvas. מאפשר יכולות AI מתקדמות בתוך ה-LMS.",
+                categories: ["ניהול למידה ו-AI", "בניית אפליקציות ללא קוד"],
+                pricing: "-",
+                googleOrg: false, // Canvas הוא לא של גוגל ארגוני, גם אם משולב עם ג'מיני
+                lessonExample: "שיעור היסטוריה: שימוש בשילוב כדי לייצר סיכומים אוטומטיים של שיעורים, להציע שאלות מותאמות אישית לתלמידים, וליצור חומרים דיגיטליים. שיעור יזמות: יצירת לוח מחוונים (dashboard) פשוט ב-Canvas המציג נתוני פרויקט.",
+                pedagogicalTip: "עודדו את התלמידים והמורים להשתמש בשילובים בין כלים כדי לשפר את תהליך הלמידה. שילוב זה יכול לאפשר יצירת כלי ניהול ואבטיפוסים חינוכיים."
+            },
+            {
+                name: "Suno",
+                description: "מחולל מוזיקה מבוסס AI היוצר שירים שלמים, כולל מילים וכלי נגינה, מטקסט.",
+                categories: ["מוזיקה ויצירה"],
+                pricing: "חינם ובתשלום",
+                googleOrg: false,
+                lessonExample: "שיעור מוזיקה: תלמידים יכולים ליצור פסקול מקורי לסיפור קצר שכתבו בשיעור ספרות, או להלחין שיר על אירוע היסטורי, תוך שימוש בפרומפט טקסטואלי בלבד.",
+                pedagogicalTip: "עודדו את התלמידים להתנסות בז'אנרים מוזיקליים שונים ולנתח כיצד שינויים בפרומפט משפיעים על התוצאה המוזיקלית. זה מפתח יצירתיות, הבנה מוזיקלית ויכולת ניסוח."
+            }
+        ];
+
+        // פונקציה לקבלת דרגת עדיפות למיון
+        function getPriority(tool) {
+            if (tool.googleOrg) {
+                return 0; // כלים של גוגל ארגוני בראש סדר העדיפויות
+            }
+            if (tool.pricing.includes("חינם") && !tool.pricing.includes("בתשלום")) {
+                return 1; // כלים חינמיים אחרים
+            }
+            if (tool.pricing.includes("חינם ובתשלום") || tool.pricing.includes("חינם (עם קרדיטים) ובתשלום") || tool.pricing.includes("חינם ל-7 ימים ובתשלום")) {
+                return 2; // כלים עם אופציה חינמית או קרדיטים
+            }
+            if (tool.pricing.includes("בתשלום")) {
+                return 3; // כלים בתשלום
+            }
+            return 4; // השאר (טרם הוכרז, משתנה, לא ברור, -)
+        }
+
+
+        // פונקציה למיון ועיבוד הכלים
+        function sortAndDisplayTools(toolsToDisplay) {
+            // מיון הכלים לפי העדיפות שנקבעה ולפי שם
+            toolsToDisplay.sort((a, b) => {
+                const priorityA = getPriority(a);
+                const priorityB = getPriority(b);
+
+                if (priorityA === priorityB) {
+                    return a.name.localeCompare(b.name, 'he', { sensitivity: 'base' }); // מיון אלפביתי בעברית
+                }
+                return priorityA - priorityB;
+            });
+
+            const container = document.getElementById('tools-container');
+            container.innerHTML = ''; // נקה את המיכל לפני הצגה
+
+            if (toolsToDisplay.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-500 text-xl col-span-full">לא נמצאו כלים בקטגוריה זו.</p>';
+                return;
+            }
+
+            toolsToDisplay.forEach(tool => {
+                let cardClass = '';
+                let pricingText = tool.pricing;
+
+                if (tool.googleOrg && tool.pricing === "חינם") { // גוגל ארגוני וחינם
+                    cardClass = 'google-tool';
+                    pricingText = 'חינם (גוגל ארגוני)';
+                } else if (tool.pricing === "חינם") { // רק חינם
+                    cardClass = 'free-tool';
+                } else if (tool.pricing.includes("חינם") && tool.pricing.includes("בתשלום")) { // חינם ובתשלום
+                    cardClass = 'mixed-tool';
+                } else if (tool.pricing.includes("בתשלום")) { // רק בתשלום
+                    cardClass = 'premium-tool';
+                } else { // לא ידוע
+                    cardClass = 'unknown-tool';
+                    pricingText = 'לא זמין / לא ברור';
+                }
+
+                // יצירת תגי קטגוריה
+                const categoryBadges = tool.categories.map(cat => `<span class="category-badge">${cat}</span>`).join('');
+                
+                const toolCard = `
+                    <div class="tool-card ${cardClass} p-6 border rounded-xl flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-2 text-gray-900">${tool.name}</h3>
+                            <div class="mb-4 text-gray-600">
+                                ${categoryBadges}
+                                <span class="category-badge bg-blue-500">${pricingText}</span>
+                            </div>
+                            <p class="text-gray-700 mb-4 text-sm leading-relaxed">${tool.description}</p>
+                            <p class="text-gray-800 text-base font-medium mt-4">**דוגמה לשימוש בשיעור:**</p>
+                            <p class="text-gray-700 text-sm leading-relaxed">${tool.lessonExample}</p>
+                            <p class="text-gray-800 text-base font-medium mt-4">**טיפ טכנו-פדגוגי:**</p>
+                            <p class="text-gray-700 text-sm leading-relaxed">${tool.pedagogicalTip}</p>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += toolCard;
+            });
+        }
+
+        // מילוי ה-dropdown בקטגוריות ייחודיות
+        const categorySelect = document.getElementById('category-select');
+        // קבל את כל הקטגוריות הייחודיות מתוך הנתונים
+        const allCategories = [...new Set(toolsData.flatMap(tool => tool.categories))];
+        allCategories.sort((a, b) => a.localeCompare(b, 'he', { sensitivity: 'base' })); // מיון אלפביתי בעברית
+        
+        // הוסף את "כל הקטגוריות" כאפשרות ראשונה
+        const allOption = document.createElement('option');
+        allOption.value = 'all';
+        allOption.textContent = 'כל הקטגוריות';
+        categorySelect.appendChild(allOption);
+
+        allCategories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            categorySelect.appendChild(option);
+        });
+
+        // פונקציה לסינון כלים
+        function filterTools() {
+            const selectedCategory = categorySelect.value;
+            let filteredTools = [];
+
+            if (selectedCategory === 'all') {
+                filteredTools = [...toolsData];
+            } else {
+                filteredTools = toolsData.filter(tool => tool.categories.includes(selectedCategory));
+            }
+            sortAndDisplayTools(filteredTools);
+        }
+
+        // האזנה לשינויים ב-dropdown
+        categorySelect.addEventListener('change', filterTools);
+
+        // הצג את כל הכלים בטעינת הדף הראשונית
+        filterTools();
+    </script>
+</body>
+</html>
