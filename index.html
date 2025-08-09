@@ -16,6 +16,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 0.75rem; /* rounded-xl */
             transition: transform 0.2s ease-in-out;
+            cursor: pointer; /* כדי לציין שאפשר ללחוץ */
         }
         .tool-card:hover {
             transform: translateY(-5px);
@@ -51,13 +52,150 @@
             color: white;
             background-color: #64748b; /* slate-500 */
         }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            direction: rtl;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2.5rem; /* p-10 */
+            border-radius: 1.5rem; /* rounded-3xl */
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: right;
+        }
+        .modal-close-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem; /* יישור לימין של המודאל */
+            font-size: 1.75rem; /* text-3xl */
+            font-weight: bold;
+            cursor: pointer;
+            color: #4b5563; /* text-gray-600 */
+        }
+        .modal-header {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: bold;
+            margin-bottom: 1.5rem; /* mb-6 */
+            color: #1f2937; /* text-gray-900 */
+            text-align: center;
+        }
+        .modal-section-title {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 600; /* font-semibold */
+            margin-top: 1.5rem; /* mt-6 */
+            margin-bottom: 0.75rem; /* mb-3 */
+            color: #374151; /* text-gray-800 */
+        }
+        .modal-text {
+            line-height: 1.75; /* leading-relaxed */
+            color: #4b5563; /* text-gray-700 */
+            margin-bottom: 1rem;
+        }
+        .modal-link {
+            display: block;
+            margin-top: 0.75rem; /* mt-3 */
+            color: #2563eb; /* blue-700 */
+            font-weight: 600;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        .modal-link:hover {
+            color: #1d4ed8; /* blue-800 */
+        }
+        .top-links-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .top-link-button {
+            background-color: #34d399; /* emerald-400 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .top-link-button:hover {
+            background-color: #10b981; /* emerald-600 */
+        }
+        /* Style for Excellent Links page */
+        #excellent-links-page {
+            display: none; /* Hidden by default */
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+        #excellent-links-page h3 {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #1f2937;
+        }
+        #excellent-links-page ul {
+            list-style: none;
+            padding: 0;
+        }
+        #excellent-links-page li {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        #excellent-links-page li a {
+            color: #2563eb;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+        #excellent-links-page li a:hover {
+            color: #1d4ed8;
+        }
+        #excellent-links-page .back-button {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto 0;
+            background-color: #64748b; /* slate-500 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease-in-out;
+        }
+        #excellent-links-page .back-button:hover {
+            background-color: #475569; /* slate-700 */
+        }
     </style>
 </head>
 <body class="p-6">
-    <div class="max-w-7xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+    <div id="main-content" class="max-w-7xl mx-auto bg-white p-8 rounded-xl shadow-lg">
         <h1 class="text-4xl font-bold text-center mb-2 text-gray-800">כלי AI לטכנו-פדגוגיה</h1>
         <h2 class="text-2xl font-semibold text-center mb-4 text-gray-700">הרב תחומי למדעים לאמנויות עמל חדרה</h2>
         <p class="text-center text-gray-600 mb-8">עריכה: מריאלה שטיין</p>
+
+        <div class="top-links-container">
+            <button class="top-link-button" onclick="loadExcellentLinks()">קישורים מעולים</button>
+        </div>
 
         <div class="mb-8 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse">
             <label for="category-select" class="text-lg font-semibold text-gray-700 ml-2">בחר קטגוריה:</label>
@@ -71,6 +209,42 @@
         </div>
     </div>
 
+    <!-- Modal Structure -->
+    <div id="tool-guide-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <span class="modal-close-button" id="close-modal-button">&times;</span>
+            <h3 class="modal-header" id="modal-tool-name"></h3>
+            
+            <h4 class="modal-section-title">מדריך צעד אחר צעד:</h4>
+            <p class="modal-text" id="modal-step-by-step-guide"></p>
+
+            <h4 class="modal-section-title">קישורים נוספים:</h4>
+            <a href="#" id="modal-tool-link" class="modal-link" target="_blank">מעבר לכלי</a>
+            <a href="#" id="modal-recorded-guide-link" class="modal-link" target="_blank">מדריך מוקלט (וידאו)</a>
+            <p class="modal-text text-sm text-gray-500 mt-4" id="modal-no-recorded-guide-message" style="display: none;">אין מדריך מוקלט זמין כרגע.</p>
+        </div>
+    </div>
+
+    <!-- Excellent Links Page -->
+    <div id="excellent-links-page" class="hidden">
+        <h3>קישורים מעולים למדריכי AI</h3>
+        <ul>
+            <li>
+                <a href="https://www.youtube.com/@TelAvivit" target="_blank">הילי זוורו - Tel Avivit (YouTube)</a>
+            </li>
+            <li>
+                <a href="https://www.youtube.com/@AIWithHenry" target="_blank">הנרי - AI With Henry (YouTube)</a>
+            </li>
+            <li>
+                <a href="https://www.youtube.com/@moshikoa" target="_blank">מושיקו מגוגל - Moshiko A. (YouTube)</a>
+            </li>
+            <li>
+                <a href="https://www.youtube.com/@ICanCanva-Hebrew" target="_blank">הדס אבידור גולדין - I Can Canva Hebrew (YouTube)</a>
+            </li>
+        </ul>
+        <button class="back-button" onclick="showMainContent()">חזרה למסך הראשי</button>
+    </div>
+
     <script>
         // הגדרת נתוני הכלים
         const toolsData = [
@@ -81,7 +255,14 @@
                 pricing: "חינם (למורים דרך משרד החינוך)",
                 googleOrg: false, // Canvas הוא לא של גוגל ארגוני, גם אם משולב עם ג'מיני
                 lessonExample: "שיעור היסטוריה: שימוש בשילוב כדי לייצר סיכומים אוטומטיים של שיעורים, להציע שאלות מותאמות אישית לתלמידים, וליצור חומרים דיגיטליים. שיעור יזמות: יצירת לוח מחוונים (dashboard) פשוט ב-Canvas המציג נתוני פרויקט.",
-                pedagogicalTip: "עודדו את התלמידים והמורים להשתמש בשילובים בין כלים כדי לשפר את תהליך הלמידה. שילוב זה יכול לאפשר יצירת כלי ניהול ואבטיפוסים חינוכיים."
+                pedagogicalTip: "עודדו את התלמידים והמורים להשתמש בשילובים בין כלים כדי לשפר את תהליך הלמידה. שילוב זה יכול לאפשר יצירת כלי ניהול ואבטיפוסים חינוכיים.",
+                toolLink: "https://gemini.google.com/", // Updated as per user's latest input
+                recordedGuideLink: "https://www.youtube.com/watch?v=BMBKRCbsJ7E", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> יש להתחבר למערכת Canvas באמצעות חשבון משרד החינוך. ודא כי המוסד שלך מוגדר לשימוש ב-Canvas Gemini.</p>
+                    <p><strong>שימוש:</strong> נווט לקורס הרצוי ב-Canvas. חפש את סמליל Gemini או אפשרויות ה-AI המשולבות בממשק (לדוגמה, ביצירת מטלות, דיונים או סיכומים). בחר באפשרות הרצויה ועקוב אחר ההנחיות הספציפיות לכלי.</p>
+                    <p><strong>התנתקות:</strong> בדומה לכלים אחרים ב-Canvas, ההתנתקות מתבצעת על ידי יציאה מחשבון Canvas שלך.</p>
+                `
             },
             {
                 name: "Google Classroom",
@@ -89,8 +270,18 @@
                 categories: ["ניהול למידה"],
                 pricing: "חינם",
                 googleOrg: true,
-                lessonExample: "שיעור היסטוריה: יצירת כיתה וירטואלית, העלאת חומרי קריאה, הגדרת מטלות לתלמידים ואיסוף עבודות דיגיטליות. ניתן גם לפרסם הודעות לכיתה ולעקוב אחר התקדמות התלמידים.",
-                pedagogicalTip: "השתמשו ב-Google Classroom כמרכז ריכוז לכל הפעילות הלימודית הדיגיטלית. זה מפשט את התקשורת, מארגן את החומרים וחוסך זמן רב."
+                lessonExample: "שיעור היסטוריה: יצירת כיתה וירטואלית, העלאת חומרי קריאה, הגדרת מטלות לתלמידים ואיסוף עבודות דיגיטליות. ניתן גם לפרסום הודעות לכיתה ולעקוב אחר התקדמות התלמידים.",
+                pedagogicalTip: "השתמשו ב-Google Classroom כמרכז ריכוז לכל הפעילות הלימודית הדיגיטלית. זה מפשט את התקשורת, מארגן את החומרים וחוסך זמן רב.",
+                toolLink: "https://classroom.google.com/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=sU142l1_6M0", // מדריך מושיקו מגוגל
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-classroom.google.com והתחברו עם חשבון Google הארגוני שלכם ממשרד החינוך.</p>
+                    <p><strong>יצירת כיתה:</strong> לחצו על כפתור "+" בפינה השמאלית העליונה ובחרו "יצירת כיתה". מלאו את הפרטים הנדרשים.</p>
+                    <p><strong>הזמנת תלמידים:</strong> שתפו את קוד הכיתה עם התלמידים, או הזמינו אותם ישירות דרך כתובת המייל.</p>
+                    <p><strong>פרסום מטלות וחומרים:</strong> עברו ללשונית "עבודת כיתה" (Classwork) וצרו מטלה, שאלה, חומר או נושא חדש.</p>
+                    <p><strong>מתן ציונים ומשוב:</strong> סמנו את עבודות התלמידים, ספקו משוב אישי ופרסמו ציונים.</p>
+                    <p><strong>התנתקות:</strong> לחצו על תמונת הפרופיל שלכם בפינה השמאלית העליונה ובחרו "התנתק".</p>
+                `
             },
             {
                 name: "DALL-E 3",
@@ -99,7 +290,16 @@
                 pricing: "בתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור היסטוריה: יצירת תמונות מציאותיות או ציורים בסגנונות שונים המתארים אירועים היסטוריים, כדי להמחיש לתלמידים את התקופה בצורה ויזואלית. לדוגמה, יצירת תמונה של 'הצהרת בלפור כתובה על קלף עתיק עם נוף ירושלים עתיקה ברקע'.",
-                pedagogicalTip: "עודדו תלמידים להשתמש בפרומפטים ספציפיים וללמוד כיצד 'לדבר' עם ה-AI כדי לקבל את התוצאות הטובות ביותר. זה מפתח חשיבה ביקורתית ויצירתית."
+                pedagogicalTip: "עודדו תלמידים להשתמש בפרומפטים ספציפיים וללמוד כיצד 'לדבר' עם ה-AI כדי לקבל את התוצאות הטובות ביותר. זה מפתח חשיבה ביקורתית ויצירתית.",
+                toolLink: "https://openai.com/index/dall-e-3/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=Cq_B8n_V2Y8", // מדריך הנרי AI
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> DALL-E 3 זמין כחלק מ-ChatGPT Plus או Bing Image Creator. התחברו לפלטפורמות אלו.</p>
+                    <p><strong>הזנת פרומפט:</strong> בשדה הטקסט, כתבו תיאור מפורט של התמונה שתרצו ליצור (לדוגמה: "חתול סייברפאנק רוכב על חד-קרן ניאון").</p>
+                    <p><strong>יצירה:</strong> לחצו על כפתור היצירה. ה-AI ייצור עבורכם מספר אופציות לתמונה.</p>
+                    <p><strong>בחירה ועריכה:</strong> בחרו את התמונה המועדפת עליכם, ושמרו אותה. ניתן גם לבקש שינויים קלים בפרומפט המקורי.</p>
+                    <p><strong>התנתקות:</strong> יציאה מחשבון הפלטפורמה (ChatGPT או Bing) שבה השתמשתם.</p>
+                `
             },
             {
                 name: "Bing Image Creator",
@@ -108,7 +308,16 @@
                 pricing: "חינם (עם קרדיטים)",
                 googleOrg: false,
                 lessonExample: "שיעור גיאוגרפיה: יצירת תמונות להמחשת סביבות גיאוגרפיות שונות, כמו 'יער גשם טרופי' או 'מדבר מושלג'.",
-                pedagogicalTip: "השתמש בו ככלי חזותי לסיעור מוחות, בו התלמידים מייצרים במהירות תמונות המייצגות רעיונות שונים."
+                pedagogicalTip: "השתמש בו ככלי חזותי לסיעור מוחות, בו התלמידים מייצרים במהירות תמונות המייצגות רעיונות שונים.",
+                toolLink: "https://www.bing.com/images/create",
+                recordedGuideLink: null,
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-bing.com/images/create והתחברו עם חשבון מיקרוסופט שלכם (ניתן ליצור חשבון חינם).</p>
+                    <p><strong>הזנת פרומפט:</strong> בשדה הטקסט, הקלידו את התיאור של התמונה הרצויה. לדוגמה: "עיר עתידנית בלילה גשום עם רחפנים טסים".</p>
+                    <p><strong>יצירה:</strong> לחצו על כפתור "צור" (Create). הכלי ייצר עבורכם מספר תמונות בהתבסס על התיאור.</p>
+                    <p><strong>שמירה:</strong> בחרו את התמונה שאהבתם, לחצו עליה ובחרו באפשרות "שמור".</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל שלכם בפינה העליונה של המסך ובחרו "התנתק".</p>
+                `
             },
             {
                 name: "Midjourney 6.0",
@@ -117,7 +326,16 @@
                 pricing: "בתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור אומנות: יצירת גרפיקה מרהיבה למצגות, עיצוב לוגו פיקטיבי לחברה, או הפקת תמונות לאירוע היסטורי.",
-                pedagogicalTip: "מומלץ לשלב את השימוש בכלי זה בפרויקטים מתקדמים או בתחום האמנות והעיצוב, תוך הדגשת החשיבות של ניסוח פרומפטים מדויקים."
+                pedagogicalTip: "מומלץ לשלב את השימוש בכלי זה בפרויקטים מתקדמים או בתחום האמנות והעיצוב, תוך הדגשת החשיבות של ניסוח פרומפטים מדויקים.",
+                toolLink: "https://chaton.ai/web/prod/onboarding-004/reviews", // Updated as per user's latest input
+                recordedGuideLink: "https://www.youtube.com/watch?v=QJzfkyp4I2U", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> יש להצטרף לשרת הדיסקורד של Midjourney לאחר רכישת מנוי. תזדקקו לחשבון Discord.</p>
+                    <p><strong>שימוש:</strong> היכנסו לאחד מחדרי ה-"Newbie" בשרת. הקלידו את הפקודה <code>/imagine</code> ולאחריה את התיאור של התמונה שברצונכם ליצור באנגלית (לדוגמה: <code>/imagine a futuristic city at sunset --ar 16:9</code>).</p>
+                    <p><strong>יצירה ושיפור:</strong> המתינו שהתמונה תיווצר. תוכלו לבחור גרסה ספציפית ("U" עבור Upscale) או ליצור וריאציות ("V" עבור Variations).</p>
+                    <p><strong>שמירה:</strong> לחצו על התמונה שנוצרה כדי להגדיל אותה, ולאחר מכן לחצו לחיצה ימנית (או לחיצה ארוכה בנייד) ושמרו את התמונה.</p>
+                    <p><strong>התנתקות:</strong> יציאה מחשבון הדיסקורד שלכם.</p>
+                `
             },
             {
                 name: "Adobe Firefly 3",
@@ -126,7 +344,17 @@
                 pricing: "חינם (עם קרדיטים) ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור אלקטרוניקה: יצירת הדמיה של מעגל חשמלי, תוך הוספת אפקטים של אור ותנועה.",
-                pedagogicalTip: "שלבו את הכלי בשיעורי אלקטרוניקה כדי לייצר הדמיות של רכיבים או מעגלים אלקטרוניים בצורה יצירתית ופדגוגית."
+                pedagogicalTip: "שלבו את הכלי בשיעורי אלקטרוניקה כדי לייצר הדמיות של רכיבים או מעגלים אלקטרוניים בצורה יצירתית ופדגוגית.",
+                toolLink: "https://firefly.adobe.com/?media=featured",
+                recordedGuideLink: "https://www.youtube.com/watch?v=gN6DHvy7SwY", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו לאתר Adobe Firefly והתחברו עם חשבון Adobe שלכם (ניתן ליצור חשבון חינם).</p>
+                    <p><strong>בחירת כלי:</strong> בחרו את סוג היצירה הרצויה (לדוגמה: 'טקסט לתמונה').</p>
+                    <p><strong>הזנת פרומפט:</strong> הזינו את תיאור התמונה שברצונכם ליצור בשדה הטקסט.</p>
+                    <p><strong>התאמה אישית:</strong> השתמשו באפשרויות הצדדיות כדי לשלוט בסגנון, צבעים, יחס גובה-רוחב ועוד.</p>
+                    <p><strong>יצירה ושמירה:</strong> לחצו על 'צור' וצפו בתוצאות. שמרו את התמונה המועדפת עליכם.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל ובחרו 'התנתק' (Sign out).</p>
+                `
             },
             {
                 name: "Ideogram",
@@ -135,7 +363,17 @@
                 pricing: "חינם (עם קרדיטים) ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור לשון: יצירת פוסטרים עם כותרות בולטות, עיצוב של עיתון כיתתי, או יצירת כרטיסי ברכה בעברית.",
-                pedagogicalTip: "הכלי מעולה להדגמת ההבדל בין מחוללי תמונה, ומדגיש את החשיבות של התמחות ספציפית ב-AI."
+                pedagogicalTip: "הכלי מעולה להדגמת ההבדל בין מחוללי תמונה, ומדגיש את החשיבות של התמחות ספציפית ב-AI.",
+                toolLink: "https://ideogram.ai/t/explore",
+                recordedGuideLink: "https://www.youtube.com/watch?v=Hf9Dpp0jiGo", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו לאתר Ideogram והתחברו באמצעות חשבון Google שלכם.</p>
+                    <p><strong>הזנת פרומפט:</strong> הקלידו את התיאור של התמונה הרצויה, כולל הטקסט שברצונכם לשלב (לדוגמה: "כרזה עם כיתוב 'שלום עולם' בצבעי ניאון").</p>
+                    <p><strong>בחירת סגנון:</strong> בחרו סגנון אמנותי מתוך האפשרויות הנתונות (לדוגמה: ציור, תמונה מציאותית, סייברפאנק).</p>
+                    <p><strong>יצירה:</strong> לחצו על כפתור היצירה והמתינו שהתמונות ייווצרו.</p>
+                    <p><strong>שמירה:</strong> בחרו את התמונה הטובה ביותר, לחצו עליה כדי להגדיל אותה, ושמרו למחשב.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל ובחרו 'התנתק'.</p>
+                `
             },
             {
                 name: "Google Docs/Slides",
@@ -144,7 +382,23 @@
                 pricing: "חינם",
                 googleOrg: true,
                 lessonExample: "שיעור מדעים: יצירת סיכומי שיעור, כתיבת עבודה משותפת, יצירת מצגות על פי נושא נתון, או תרגום חומרים לשפה אחרת.",
-                pedagogicalTip: "השתמשו בפיצ'ר ה-AI כדי ללמד תלמידים כיצד לסכם טקסטים ארוכים ולבנות מצגות מובנות."
+                pedagogicalTip: "השתמשו בפיצ'ר ה-AI כדי ללמד תלמידים כיצד לסכם טקסטים ארוכים ולבנות מצגות מובנות.",
+                toolLink: "https://docs.google.com/document/u/0/", // Updated to Docs link
+                recordedGuideLink: "https://www.youtube.com/watch?v=3y64E-CWEyw", // First Docs YouTube guide
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-docs.google.com או slides.google.com והתחברו עם חשבון Google הארגוני שלכם.</p>
+                    <p><strong>שימוש ב-AI (כתיבה/סיכום):</strong> במסמך או במצגת, סמנו טקסט קיים או התחילו לכתוב. חפשו את אפשרויות ה-AI (לדוגמה: "עזור לי לכתוב" או "סיכום") בתפריטים או בתוך תיבת הטקסט.</p>
+                    <p><strong>יצירת תמונה ב-Slides:</strong> במצגת, לחצו על 'הוספה' > 'תמונה' > 'צור תמונה עם AI' והזינו פרומפט.</p>
+                    <p><strong>שיתוף ושינוי הרשאות:</strong> לחצו על 'שתף' (Share) והגדירו את רמות הגישה (צפייה, עריכה, תגובה) עבור משתמשים אחרים.</p>
+                    <p><strong>מדריכים נוספים ל-Google Docs ו-Slides:</p>
+                    <ul>
+                        <li><a href="https://www.youtube.com/watch?v=EwGCPogSHbI" target="_blank">Google Docs Guide 2</a></li>
+                        <li><a href="https://www.youtube.com/watch?v=09ACzsoobEI" target="_blank">Google Docs Guide 3</a></li>
+                        <li><a href="https://www.youtube.com/watch?v=mEum5pgciNs" target="_blank">Google Slides Guide 1</a></li>
+                        <li><a href="https://www.youtube.com/watch?v=zFqk1QBJnoc" target="_blank">Google Slides Guide 2</a></li>
+                    </ul>
+                    <p><strong>התנתקות:</strong> לחצו על תמונת הפרופיל שלכם בפינה השמאלית העליונה ובחרו "התנתק".</p>
+                `
             },
             {
                 name: "Google Meet (Annotate)",
@@ -153,7 +407,16 @@
                 pricing: "חינם",
                 googleOrg: true,
                 lessonExample: "שיעור מתמטיקה: הדגשת שלבי פתרון על גבי תרגיל, ומתן משוב ויזואלי בזמן אמת.",
-                pedagogicalTip: "השתמשו בכלי זה כדי להגביר את האינטראקטיביות והמעורבות בשיעורים מקוונים."
+                pedagogicalTip: "השתמשו בכלי זה כדי להגביר את האינטראקטיביות והמעורבות בשיעורים מקוונים.",
+                toolLink: "https://meet.google.com/landing",
+                recordedGuideLink: "https://www.youtube.com/watch?v=AJ8iJ-JfebA", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> התחברו לשיחת Google Meet.</p>
+                    <p><strong>שיתוף מסך:</strong> התחילו לשתף את המסך שלכם.</p>
+                    <p><strong>הפעלת כלי Annotate:</strong> כלי ה-Annotate (שרטוט והדגשה) בדרך כלל מופיע כחלק מהאפשרויות הנוספות ב-Google Meet כאשר אתם משתפים מסך או לוח ציור. חפשו אייקון של עט או כלי ציור. אם האפשרות לא זמינה ישירות, ייתכן שתצטרכו להשתמש בתוסף צד שלישי לדפדפן או לוודא שהפונקציונליות מופעלת בחשבון Google Workspace של המוסד.</p>
+                    <p><strong>שרטוט:</strong> השתמשו בעכבר או במשטח מגע כדי לשרטט, לסמן ולהדגיש על המסך המשותף. ניתן לבחור צבעים וסוגי כלים שונים.</p>
+                    <p><strong>סיום:</strong> סיימו את שיתוף המסך או צאו מכלי השרטוט.</p>
+                `
             },
             {
                 name: "Canva/Canva AI",
@@ -162,7 +425,16 @@
                 pricing: "חינם (למורים דרך משרד החינוך) ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור אמנות: יצירת פוסטים לרשתות חברתיות, עיצוב פרויקט אישי, יצירת עלוני מידע ותוצרים ויזואליים. שיעור יזמות: יצירת אבטיפוס מהיר לאפליקציה פשוטה.",
-                pedagogicalTip: "כלי אידיאלי לשילוב בשיעורי לשון ויצירה כדי ללמד על מבנה ויזואלי וכיצד לשלב תמונה וטקסט. מעולה ליצירת ממשקים בסיסיים באפליקציות. נצלו את הגישה החינמית למוסדות חינוך!"
+                pedagogicalTip: "כלי אידיאלי לשילוב בשיעורי לשון ויצירה כדי ללמד על מבנה ויזואלי וכיצד לשלב תמונה וטקסט. מעולה ליצירת ממשקים בסיסיים באפליקציות. נצלו את הגישה החינמית למוסדות חינוך!",
+                toolLink: "https://www.canva.com/he_il/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=8-PoySQY6wE", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-canva.com/education והתחברו עם חשבון Google או המייל הארגוני שלכם. עקבו אחר הוראות האימות של Canva למוסדות חינוך.</p>
+                    <p><strong>בחירת תבנית:</strong> בחרו תבנית עיצוב (מצגת, פוסטר, מסמך) או התחילו עיצוב חדש מאפס.</p>
+                    <p><strong>שימוש ב-AI (Magic Design/Magic Write):</strong> חפשו את כפתורי ה-Magic Design או Magic Write בתוך העורך. הקלידו פרומפט טקסט כדי ליצור עיצובים או טקסט באופן אוטומטי.</p>
+                    <p><strong>עריכה ושיתוף:</strong> התאימו אישית את העיצוב עם תמונות, טקסט, אלמנטים. לחצו על 'שתף' כדי להוריד את הקובץ או לשתף אותו אונליין.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל שלכם בפינה השמאלית העליונה ובחרו "התנתק".</p>
+                `
             },
             {
                 name: "Padlet",
@@ -171,7 +443,17 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור תנ\"ך: סיעור מוחות על דמות תנ\"כית, יצירת לוח ידע משותף ואיסוף מקורות מידע.",
-                pedagogicalTip: "השתמשו ב-Padlet כדי לארגן ידע ומידע בצורה ויזואלית ולאפשר לכל תלמיד להביע את קולו."
+                pedagogicalTip: "השתמשו ב-Padlet כדי לארגן ידע ומידע בצורה ויזואלית ולאפשר לכל תלמיד להביע את קולו.",
+                toolLink: "https://padlet.com/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=rDdwYRDjYd0", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-padlet.com והתחברו (ניתן באמצעות חשבון Google או מייל).</p>
+                    <p><strong>יצירת Padlet חדש:</strong> לחצו על 'צור Padlet' (Make a Padlet) ובחרו תבנית (לדוגמה: קיר, רשת, מדף).</p>
+                    <p><strong>הגדרת פרטים:</strong> תנו שם ל-Padlet, הוסיפו תיאור ורקע.</p>
+                    <p><strong>הזמנת משתתפים:</strong> לחצו על 'שתף' והזמינו תלמידים באמצעות קישור, קוד QR או מייל. הגדירו את ההרשאות המתאימות (צפייה, כתיבה).</p>
+                    <p><strong>פרסום תוכן:</strong> לחצו על כפתור הוספה (לרוב +) כדי להוסיף טקסט, תמונות, סרטונים, קישורים ועוד.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל ובחרו "התנתק".</p>
+                `
             },
             {
                 name: "Genially",
@@ -180,7 +462,16 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור היסטוריה: יצירת חדר בריחה דיגיטלי המבוסס על נושא, כמו 'כיבוש ירושלים'.",
-                pedagogicalTip: "עודדו תלמידים להשתמש בכלי זה כדי ליצור תוצרים דיגיטליים שיש בהם אלמנט של חקירה ומשחק."
+                pedagogicalTip: "עודדו תלמידים להשתמש בכלי זה כדי ליצור תוצרים דיגיטליים שיש בהם אלמנט של חקירה ומשחק.",
+                toolLink: "https://genially.com/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=rDdwYRDjYd0", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-genial.ly והתחברו (ניתן באמצעות חשבון Google או מייל).</p>
+                    <p><strong>יצירת Genially חדש:</strong> לחצו על 'Create Genially' ובחרו את סוג היצירה (מצגת, אינפוגפיקה, משחק).</p>
+                    <p><strong>בחירת תבנית ועריכה:</strong> בחרו תבנית ועצבו את התוכן שלכם באמצעות כלי העורך. הוסיפו אלמנטים אינטראקטיביים.</p>
+                    <p><strong>פרסום ושיתוף:</strong> לחצו על 'All set!' או 'Ready!' כדי לפרסם את היצירה ולשתף אותה עם תלמידים באמצעות קישור.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל ובחרו "התנתק".</p>
+                `
             },
             {
                 name: "Gemini (כולל הרחבות)",
@@ -189,25 +480,52 @@
                 pricing: "חינם",
                 googleOrg: true,
                 lessonExample: "שיעור מתמטיקה: יצירת תוכניות שיעור, תרגום טקסטים, סיכום מאמרים ארוכים, פתרון בעיות במתמטיקה והבנת קבצים שונים. **שיעור מחקר**: ביצוע 'חיפוש עמוק' ב-Gemini על נושא, ולאחר מכן בקשה להצגה ויזואלית של המידע המרכזי שסוכם, לדוגמה באמצעות תרשים יחסים או מפת מושגים שנוצרה אוטומטית. **שיעור אמנות**: יצירת תמונות מקוריות על בסיס פרומפט טקסטואלי, לדוגמה: 'צור תמונה בסגנון אימפרסיוניסטי של עיר עתיקה בשקיעה'. **שיעור לשון**: כתיבת חיבורים, שיפור סגנון, סיכום טקסטים ארוכים או תרגום מסמכים.",
-                pedagogicalTip: "תנו לתלמידים לכתוב פרומפטים כדי לבחון וללמוד על עבודת ה-AI, תוך הדגשת החשיבות של ניסוח מדויק וביקורתי. נצלו את יכולות ה'חיפוש העמוק', ההצגה הויזואלית, ו**יצירת התמונות** לשיפור הבנת הנקרא והמידע, וכן לפיתוח יצירתיות. השתמשו בו ככלי עזר מתקדם לכתיבה ולשיפור מיומנויות לשוניות."
+                pedagogicalTip: "תנו לתלמידים לכתוב פרומפטים כדי לבחון וללמוד על עבודת ה-AI, תוך הדגשת החשיבות של ניסוח מדויק וביקורתי. נצלו את יכולות ה'חיפוש העמוק', ההצגה הויזואלית, ו**יצירת התמונות** לשיפור הבנת הנקרא והמידע, וכן לפיתוח יצירתיות. השתמשו בו ככלי עזר מתקדם לכתיבה ולשיפור מיומנויות לשוניות.",
+                toolLink: "https://gemini.google.com/app",
+                recordedGuideLink: "https://www.youtube.com/watch?v=0aDpqy_MymI", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-gemini.google.com והתחברו עם חשבון Google שלכם.</p>
+                    <p><strong>הזנת פרומפט:</strong> כתבו את השאלה, הבקשה או הפרומפט שלכם בשדה הטקסט (לדוגמה: "סכם לי את עיקרי מלחמת העולם השנייה").</p>
+                    <p><strong>שימוש בהרחבות:</strong> הפעילו הרחבות ספציפיות (כמו Google Workspace, YouTube, Google Maps) כדי לאפשר לג'מיני לחפש מידע ביישומים נוספים.</p>
+                    <p><strong>יצירת תמונה:</strong> לבקשת יצירת תמונה, נסחו פרומפט ספציפי (לדוגמה: "צור תמונה של טירה קסומה ביער אפל").</p>
+                    <p><strong>התנתקות:</strong> אין כפתור התנתקות ישיר בג'מיני. ההתנתקות מתבצעת על ידי יציאה מחשבון Google כולו.</p>
+                `
             },
             {
                 name: "ChatGPT",
                 description: "מודל שפה גדול ורב-מודאלי מבית OpenAI. מסוגל ליצור טקסט, לתרגם, לסכם, לענות על שאלות, לכתוב קוד ועוד.",
-                categories: ["צ'אטבוט/סייען AI", "סייען כתיבה", "חיפוש וסיכום", "טכנולוגיית AI"],
+                categories: ["צ'אטבוט/סייען AI", "סייען כתיבה", "חיפוש וסיכום", "טכנופדגוגיה"],
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור לשון: כתיבת מאמרים, יצירת סיפורים קצרים, תרגול דקדוק, או קבלת רעיונות לכתיבה יצירתית. **שיעור היסטוריה**: סיכום מידע על אירועים היסטוריים, יצירת שאלות למבחן, או כתיבת דיאלוגים בין דמויות היסטוריות.",
-                pedagogicalTip: "עודדו תלמידים להשתמש ב-ChatGPT כ'שותף לכתיבה' וככלי לסיעור מוחות. למדו אותם איך לנסח שאלות בצורה מדויקת כדי לקבל תוצאות טובות יותר, וכן לבדוק תמיד את המידע שמתקבל."
+                pedagogicalTip: "עודדו תלמידים להשתמש ב-ChatGPT כ'שותף לכתיבה' וככלי לסיעור מוחות. למדו אותם איך לנסח שאלות בצורה מדויקת כדי לקבל תוצאות טובות יותר, וכן לבדוק תמיד את המידע שמתקבל.",
+                toolLink: "https://chat.openai.com/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=mD9i4uW90F8", // מדריך הנרי AI
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-chat.openai.com והתחברו (ניתן באמצעות חשבון Google או מייל).</p>
+                    <p><strong>התחלת שיחה:</strong> התחילו שיחה חדשה בחלון הצ'אט בתחתית המסך. נסחו את השאלה או הבקשה שלכם באופן ברור ומפורט.</p>
+                    <p><strong>שימוש בתכונות נוספות (למשתמשי Plus):</strong> אם אתם מנויים ל-ChatGPT Plus, תוכלו להשתמש בתוספים, בניית GPTs מותאמים אישית או גלישה באינטרנט.</p>
+                    <p><strong>עריכה ושיפור:</strong> תוכלו לערוך את התגובה של ה-AI או לבקש הבהרות ושינויים על ידי כתיבת פרומפטים נוספים באותה שיחה.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל שלכם בפינה השמאלית התחתונה (או לוגו ה-OpenAI) ובחרו "Log out".</p>
+                `
             },
             {
                 name: "Claude",
                 description: "מודל שפה גדול מבית Anthropic. ידוע ביכולותיו לטפל בטקסטים ארוכים במיוחד, אבטחה גבוהה והפחתת הטיה.",
-                categories: ["צ'אטבוט/סייען AI", "סייען כתיבה", "חיפוש וסיכום", "טכנולוגיית AI"],
+                categories: ["צ'אטבוט/סייען AI", "סייען כתיבה", "חיפוש וסיכום", "טכנופדגוגיה"],
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור ספרות: ניתוח יצירות ספרותיות ארוכות, כתיבת סיכומים מפורטים של רומנים, או קבלת פרשנויות שונות לטקסטים. **שיעור משפטים**: ניתוח מסמכים משפטיים או פסקי דין ארוכים, וסיכום נקודות מפתח.",
-                pedagogicalTip: "הדגישו את היתרון של Claude בטיפול בטקסטים ארוכים. זהו כלי מצוין למשימות מחקר עמוקות ולניתוח חומרים מורכבים, תוך דגש על היבטים אתיים של AI."
+                pedagogicalTip: "הדגישו את היתרון של Claude בטיפול בטקסטים ארוכים. זהו כלי מצוין למשימות מחקר עמוקות ולניתוח חומרים מורכבים, תוך דגש על היבטים אתיים של AI.",
+                toolLink: "https://claude.ai/",
+                recordedGuideLink: null,
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-claude.ai והתחברו (באמצעות חשבון Google או מייל).</p>
+                    <p><strong>התחלת שיחה:</strong> התחילו שיחה חדשה בשדה הטקסט בתחתית המסך. Claude מצטיין בטיפול בטקסטים ארוכים, אז אל תהססו להזין קטעים גדולים.</p>
+                    <p><strong>העלאת קבצים:</strong> ניתן להעלות קבצים (כמו PDF או מסמכים) ולבקש מ-Claude לסכם אותם, לנתח אותם או לענות על שאלות מתוכם.</p>
+                    <p><strong>שיפור התגובה:</strong> אם התגובה הראשונית אינה מספקת, נסחו פרומפטים נוספים באותה שיחה כדי לחדד את הבקשה.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון ההגדרות או הפרופיל (לעיתים 3 קווים או גלגל שיניים) ובחרו "Log out".</p>
+                `
             },
             {
                 name: "NotebookLM",
@@ -216,7 +534,16 @@
                 pricing: "חינם",
                 googleOrg: true,
                 lessonExample: "שיעור מדעים: כלי עזר לתלמידים בחקר מידע, ניתוח חומרים לכתיבת עבודה, וסיכום של מספר מקורות. **שיעור ספרות**: העלאת יצירה ספרותית או מאמר, וקבלת מפת מושגים של הדמויות, העלילה והרעיונות המרכזיים. **שיעור היסטוריה**: העלאת מסמכים היסטוריים וקבלת סרטון וידאו קצר המסכם את תוכן המסמכים בצורה ויזואלית (כמו פודקאסט ויזואלי).",
-                pedagogicalTip: "עודדו תלמידים להעלות לכלי מאמרים שונים, וללמד אותם כיצד לייצר סיכומים ולהפיק תובנות חדשות מתוך המסמכים. נצלו את יכולת יצירת מפות המושגים והסרטונים כדי לשפר הבנה חזותית וסיכום מידע מורכב."
+                pedagogicalTip: "עודדו תלמידים להעלות לכלי מאמרים שונים, וללמד אותם כיצד לייצר סיכומים ולהפיק תובנות חדשות מתוך המסמכים. נצלו את יכולת יצירת מפות המושגים והסרטונים כדי לשפר הבנה חזותית וסיכום מידע מורכב.",
+                toolLink: "https://notebooklm.google.com/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=_vML22ACIRs", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-notebooklm.google.com והתחברו עם חשבון Google שלכם.</p>
+                    <p><strong>העלאת מסמכים:</strong> לחצו על כפתור 'העלה' או 'ייבוא' כדי להוסיף מסמכים, קבצים, קישורים, או תוכן מ-Google Docs ל-NotebookLM.</p>
+                    <p><strong>יצירת Notebook:</strong> ארגנו את המסמכים שלכם ב'מחברות' (Notebooks) לפי נושאים או פרויקטים.</p>
+                    <p><strong>שימוש בתכונות AI:</strong> בתוך כל מחברת, תוכלו לבקש מ-AI לסכם את המסמכים, לשאול שאלות ספציפיות על התוכן, ליצור מפות מושגים או פודקאסטים ויזואליים.</p>
+                    <p><strong>התנתקות:</strong> אין כפתור התנתקות ישיר ב-NotebookLM. ההתנתקות מתבצעת על ידי יציאה מחשבון Google כולו.</p>
+                `
             },
             {
                 name: "Google Sites",
@@ -225,7 +552,16 @@
                 pricing: "חינם",
                 googleOrg: true,
                 lessonExample: "שיעור אזרחות: יצירת אתר אישי כפורטפוליו, בניית אתר כיתתי או יצירת אתר לפרויקט השנתי. **שיעור מנהל**: בניית מערכת הרשמה פשוטה לאירוע כיתתי או יצירת לוח מודעות אינטראקטיבי.",
-                pedagogicalTip: "הכלי מאפשר לתלמידים ללמוד על ארגון תוכן דיגיטלי ועיצוב, תוך הדגשת החשיבות של ממשק משתמש פשוט. ניתן לנצל את יכולות ההטמעה לבניית מיני-אפליקציות חינוכיות."
+                pedagogicalTip: "הכלי מאפשר לתלמידים ללמוד על ארגון תוכן דיגיטלי ועיצוב, תוך הדגשת החשיבות של ממשק משתמש פשוט. ניתן לנצל את יכולות ההטמעה לבניית מיני-אפליקציות חינוכיות.",
+                toolLink: "https://sites.google.com/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=lGqUokyygu0", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-sites.google.com והתחברו עם חשבון Google שלכם.</p>
+                    <p><strong>יצירת אתר חדש:</strong> לחצו על כפתור "+" ליצירת אתר חדש. בחרו תבנית או התחילו מאפס.</p>
+                    <p><strong>עריכת תוכן:</strong> הוסיפו טקסט, תמונות, סרטונים, הטמיעו יישומי Google Workspace ועוד. השתמשו בסרגל הצדדי לעיצוב פריסה.</p>
+                    <p><strong>פרסום:</strong> לחצו על כפתור 'פרסם' (Publish) כדי להעלות את האתר שלכם לרשת ולשתף אותו.</p>
+                    <p><strong>התנתקות:</strong> אין כפתור התנתקות ישיר ב-Google Sites. ההתנתקות מתבצעת על ידי יציאה מחשבון Google כולו.</p>
+                `
             },
             {
                 name: "Canvas",
@@ -234,7 +570,16 @@
                 pricing: "חינם (למורים דרך משרד החינוך)",
                 googleOrg: false,
                 lessonExample: "שיעור היסטוריה: ניהול קורסים מקוונים, העלאת חומרי למידה, מעקב אחר התקדמות תלמידים ומתן משוב.",
-                pedagogicalTip: "השתמשו בפלטפורמה כדי להפוך את תהליך הלמידה לדיגיטלי ומסודר יותר."
+                pedagogicalTip: "השתמשו בפלטפורמה כדי להפוך את תהליך הלמידה לדיגיטלי ומסודר יותר.",
+                toolLink: "https://www.instructure.com/canvas/canvas-lms",
+                recordedGuideLink: null,
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> יש להתחבר למערכת Canvas באמצעות חשבון משרד החינוך דרך פורטל המוסד שלכם.</p>
+                    <p><strong>כניסה לקורס:</strong> נווטו לקורס הרצוי מלוח המחוונים שלכם.</p>
+                    <p><strong>ניהול תוכן:</strong> השתמשו בתפריט הניווט השמאלי כדי לגשת למודולים, מטלות, דיונים, קבצים ועוד. העלו חומרי למידה, צרו מטלות והגדירו תאריכי יעד.</p>
+                    <p><strong>מעקב ומשוב:</strong> עקבו אחר התקדמות התלמידים דרך ספר הציונים (Gradebook) וספקו משוב על עבודותיהם.</p>
+                    <p><strong>התנתקות:</strong> לחצו על 'חשבון' (Account) בתפריט הניווט הראשי ובחרו 'התנתק'.</p>
+                `
             },
             {
                 name: "Gamma",
@@ -243,7 +588,17 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור גאוגרפיה: יצירת מצגת מהירה ואיכותית על נושא נבחר, בניית סיפור חזותי לשיעור, או הכנת דוחות ויזואליים.",
-                pedagogicalTip: "השתמשו בכלי זה כדי ללמד תלמידים על נרטיב ויזואלי וכיצד לארגן מידע בצורה מסודרת ומושכת."
+                pedagogicalTip: "השתמשו בכלי זה כדי ללמד תלמידים על נרטיב ויזואלי וכיצד לארגן מידע בצורה מסודרת ומושכת.",
+                toolLink: "https://gamma.app",
+                recordedGuideLink: "https://www.youtube.com/watch?v=KO3bPIkYlu8", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-gamma.app והתחברו (ניתן באמצעות חשבון Google או מייל).</p>
+                    <p><strong>יצירת מצגת/מסמך חדש:</strong> לחצו על 'Create New' ובחרו 'Generate' כדי ליצור משהו חדש באמצעות AI. הזינו את נושא המצגת או המסמך.</p>
+                    <p><strong>התאמה אישית:</strong> Gamma יציע לכם מבנה ותוכן אוטומטי. תוכלו לערוך, להוסיף ולשנות טקסט, תמונות ופריסות.</p>
+                    <p><strong>הוספת אינטראקטיביות:</strong> הוסיפו סרטונים, תמונות, קודים מוטמעים ולינקים כדי להפוך את המצגת למרתקת יותר.</p>
+                    <p><strong>שיתוף:</strong> לחצו על 'Share' כדי לשתף את המצגת עם אחרים או לייצא אותה.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל שלכם ובחרו "התנתק".</p>
+                `
             },
             {
                 name: "Manus",
@@ -252,34 +607,66 @@
                 pricing: "משתנה",
                 googleOrg: false,
                 lessonExample: "שיעור לשון: כתיבת עבודות, שיפור דקדוק ותחביר, יצירת פרומפטים מורכבים.",
-                pedagogicalTip: "השתמשו בכלי זה ככלי עזר לכתיבה כדי ללמד את התלמידים על מבנה טקסטואלי והבעה בכתב."
+                pedagogicalTip: "השתמשו בכלי זה ככלי עזר לכתיבה כדי ללמד את התלמידים על מבנה טקסטואלי והבעה בכתב.",
+                toolLink: "https://manus.im/",
+                recordedGuideLink: null, // No new guide provided for Manus
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו לאתר Manus והתחברו לחשבון שלכם.</p>
+                    <p><strong>הזנת טקסט:</strong> הזינו את הטקסט שברצונכם לכתוב או לשפר בחלון העורך.</p>
+                    <p><strong>שימוש בתכונות AI:</strong> השתמשו באפשרויות ה-AI השונות (לדוגמה: 'שכתוב', 'המשך', 'סיכום', 'בדיקת דקדוק').</p>
+                    <p><strong>קבלת הצעות ושיפור:</strong> קבלו הצעות לשינויים ושיפורים בטקסט. תוכלו לבחור אם ליישם אותם או להתאים אותם.</p>
+                    <p><strong>התנתקות:</strong> בדרך כלל, לחצו על אייקון הפרופיל או התפריט ובחרו 'Sign out'.</p>
+                `
             },
             {
                 name: "Google Studio AI",
                 description: "פלטפורמה ליצירת אפליקציות וכלים מבוססי AI. **מאפשר גם עבודה עם יכולות קול וסאונד מתקדמות, כולל יצירת טקסט לדיבור (TTS).**",
-                categories: ["טכנולוגיית AI", "בניית אפליקציות ללא קוד", "קול וסאונד"],
+                categories: ["טכנופדגוגיה", "בניית אפליקציות ללא קוד", "קול וסאונד"],
                 pricing: "חינם",
                 googleOrg: true,
                 lessonExample: "שיעור אלקטרוניקה: הכרת עולם הבינה המלאכותית ויצירת אפליקציות פשוטות ללימוד. **שיעור הנגשה**: יצירת קבצי שמע של הוראות או טקסטים קצרים לצורך תלמידים עם קשיי קריאה.",
-                pedagogicalTip: "כלי אידיאלי לשיעורי אלקטרוניקה ותכנות, כדי ללמד על עולם ה-AI בצורה מעשית. נצלו את יכולות הקול שלו ליצירת חומרים מונגשים."
+                pedagogicalTip: "כלי אידיאלי לשיעורי אלקטרוניקה ותכנות, כדי ללמד על עולם ה-AI בצורה מעשית. נצלו את יכולות הקול שלו ליצירת חומרים מונגשים.",
+                toolLink: "https://aistudio.google.com/prompts/new_chat",
+                recordedGuideLink: "https://www.youtube.com/watch?v=FXyjHdoS20A", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-ai.google.dev/maker והתחברו עם חשבון Google שלכם.</p>
+                    <p><strong>בחירת מודל:</strong> בחרו את המודל או היכולת שבה תרצו להשתמש (לדוגמה: יצירת טקסט, יצירת קוד, או יכולות קול).</p>
+                    <p><strong>שימוש ביכולות קול (TTS):</strong> אם הכלי תומך ב-TTS (טקסט לדיבור), חפשו את האפשרות להקליד טקסט ולקבל פלט קולי. תוכלו לבחור את סוג הקול ושפה.</p>
+                    <p><strong>יצירת אפליקציה/פרומפט:</strong> צרו פרומפטים, קודים או יישומים פשוטים בהתאם למודל שנבחר.</p>
+                    <p><strong>התנתקות:</strong> אין כפתור התנתקות ישיר ב-Google Studio AI. ההתנתקות מתבצעת על ידי יציאה מחשבון Google כולו.</p>
+                `
             },
             {
                 name: "OpenAI (יכולות קול וסאונד)",
                 description: "פלטפורמה המאפשרת יצירת קול (טקסט לדיבור – TTS) באיכות גבוהה, כולל דיבור טבעי למגוון שימושים. זהו הבסיס לכלים רבים המבוססים על טכנולוגיות הקול של OpenAI (כמו לדוגמה, דרך API או פרויקטים ספציפיים).",
-                categories: ["קול וסאונד", "טכנולוגיית AI"],
+                categories: ["קול וסאונד", "טכנופדגוגיה"],
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור הערכה: שימוש בכלי להקראת מבחנים לתלמידים הזכאים להתאמות, יצירת קבצי שמע של שאלות המבחן או קטעי טקסט להקראה, המקלים על תלמידים המתקשים בקריאה. כמו כן, ניתן ליצור אודיו לחומרי לימוד מונגשים. **שיעור שפות**: יצירת קטעי אודיו לתרגול הגייה או הקשבה בשפה זרה.",
-                pedagogicalTip: "הכלי תומך בהנגשה ובלמידה מותאמת אישית, ומאפשר למורים ליצור בקלות חומרי אודיו ללא צורך בהקלטה עצמית. הדגישו את חשיבות הבהירות והקצב המתאים בקריאה לצורך הבנה, וכן את הפוטנציאל לתרגול שפות."
+                pedagogicalTip: "הכלי תומך בהנגשה ובלמידה מותאמת אישית, ומאפשר למורים ליצור בקלות חומרי אודיו ללא צורך בהקלטה עצמית. הדגישו את חשיבות הבהירות והקצב המתאים בקריאה לצורך הבנה, וכן את הפוטנציאל לתרגול שפות.",
+                toolLink: "https://openai.com/research/text-to-speech", // זהו קישור מחקרי, הכלי עצמו הוא חלק מה-API
+                recordedGuideLink: null,
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> יכולות הקול של OpenAI זמינות בעיקר דרך ה-API למפתחים או דרך שילובים בכלים אחרים. למורים, הדרך הפשוטה ביותר תהיה דרך כלי צד שלישי המשלבים את הטכנולוגיה, או דרך פלטפורמות כמו ChatGPT Plus (הכולל קריאת טקסט בקול).</p>
+                    <p><strong>שימוש (ב-ChatGPT Plus):</strong> בתוך ChatGPT Plus, לאחר קבלת תשובה טקסטואלית, חפשו את אייקון הרמקול ליד התשובה. לחצו עליו כדי שה-AI יקריא את התשובה בקול.</p>
+                    <p><strong>הקראת מבחן:</strong> העתיקו והדביקו את שאלות המבחן או את הטקסט שברצונכם להקריא לתוך ChatGPT. לאחר שה-AI יחזור עם תשובה (גם אם זו רק הקראה חוזרת של הטקסט), לחצו על אייקון הרמקול.</p>
+                    <p><strong>התאמת קצב:</strong> ניתן לבקש מ-ChatGPT להקריא בקצב מסוים (לדוגמה: "הקרא את הטקסט בקצב איטי יותר") כדי להתאים לצרכי התלמיד.</p>
+                    <p><strong>התנתקות:</strong> יציאה מחשבון ChatGPT שלכם.</p>
+                `
             },
             {
                 name: "Veo3",
-                description: "טכנולוגיה מתקדמת לייצור וידאו מבוסס AI.",
+                description: "טכנולוגיה מתקדמת לייצור וידאו מבוסס AI. **זוהי טכנולוגיה מבית גוגל, המיועדת בעיקר למפתחים ומשולבת בכלים אחרים, ולא ממשק משתמש ישיר ככלי עצמאי.**",
                 categories: ["יצירת וידאו"],
                 pricing: "משולב בכלים אחרים (כמו Manus)",
                 googleOrg: false,
                 lessonExample: "שיעור כימיה: יצירת סרטון אנימציה קצר או סרטון הדמיה על תהליכים כימיים מורכבים.",
-                pedagogicalTip: "שלבו את הכלי בשיעורים הדורשים המחשה ויזואלית של תהליכים מורכבים."
+                pedagogicalTip: "שלבו את הכלי בשיעורים הדורשים המחשה ויזואלית של תהליכים מורכבים.",
+                toolLink: "https://gemini.google/overview/video-generation/", // Updated to overview page
+                recordedGuideLink: "https://www.youtube.com/watch?v=2WjTCvroUec", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p>Veo3 היא טכנולוגיית AI לייצור וידאו מבית Google, המיועדת בעיקר למפתחים ומשולבת בכלים אחרים. אין ממשק משתמש ישיר למורים ככלי עצמאי. אם תרצו להשתמש ביכולות דומות, חפשו כלים ליצירת וידאו מבוססי AI המשתמשים בטכנולוגיות דומות, כמו those by Google (Vids) או כלים אחרים בקטגוריית 'יצירת וידאו'.</p>
+                `
             },
             {
                 name: "ElevenLabs",
@@ -288,7 +675,16 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור לשון: יצירת קריינות לסרטונים או מצגות, יצירת קטעי אודיו לתרגול שפות.",
-                pedagogicalTip: "השתמשו בכלי כדי ללמד על חשיבות הקול והקריינות ביצירת תוכן, ובשיעורי לשון."
+                pedagogicalTip: "השתמשו בכלי כדי ללמד על חשיבות הקול והקריינות ביצירת תוכן, ובשיעורי לשון.",
+                toolLink: "https://elevenlabs.io/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=oNPrIRxCCZY", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-elevenlabs.io והתחברו (ניתן באמצעות חשבון Google או מייל).</p>
+                    <p><strong>הזנת טקסט:</strong> הזינו את הטקסט שברצונכם להפוך לדיבור בשדה המתאים.</p>
+                    <p><strong>בחירת קול:</strong> בחרו את סוג הקול (זכר/נקבה, מבטא, סגנון) מתוך המגוון הרחב הזמין.</p>
+                    <p><strong>הורדה/האזנה:</strong> לחצו על כפתור ה'יצירה' או 'האזנה' כדי ליצור את קובץ האודיו, ולאחר מכן תוכלו להוריד אותו.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל ובחרו "Sign out".</p>
+                `
             },
             {
                 name: "Voice.ai",
@@ -297,7 +693,16 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור תיאטרון: יצירת דמויות בדיוניות, תרגול דיאלוגים בשפה זרה, והקלטת פודקאסטים כיתתיים.",
-                pedagogicalTip: "כלי מצוין לשיעורי משחק ויצירה, וכן להמחשת הבדלי קול וצליל."
+                pedagogicalTip: "כלי מצוין לשיעורי משחק ויצירה, וכן להמחשת הבדלי קול וצליל.",
+                toolLink: "https://voice.ai/",
+                recordedGuideLink: null, // No new guide provided for Voice.ai
+                stepByStepGuide: `
+                    <p><strong>התחברות והתקנה:</strong> Voice.ai הוא יישום שולחן עבודה (desktop app) שדורש הורדה והתקנה. היכנסו לאתר, הורידו והתקינו את התוכנה.</p>
+                    <p><strong>בחירת קול:</strong> בתוך האפליקציה, בחרו את סוג הקול או אפקט הקול שברצונכם להחיל.</p>
+                    <p><strong>שינוי קול בזמן אמת:</strong> ניתן לשלב את Voice.ai עם יישומי שיחות (כמו Zoom, Discord) כדי לשנות את הקול שלכם בזמן אמת.</p>
+                    <p><strong>הקלטה:</strong> חלק מהאפשרויות מאפשרות גם הקלטה של הקול המשונה.</p>
+                    <p><strong>התנתקות/יציאה:</strong> צאו מהאפליקציה או התנתקו מחשבון המשתמש אם רלוונטי.</p>
+                `
             },
             {
                 name: "Play.ht",
@@ -306,7 +711,17 @@
                 pricing: "חינם ובתשלום (הנחה למחנכים)",
                 googleOrg: false,
                 lessonExample: "שיעור ספרות: יצירת קריינות לספרים דיגיטליים, הקלטת שיעורים למורים, או תרגול שמיעה. **שיעור הערכה**: שימוש בכלי להקראת מבחנים לתלמידים הזכאים להתאמות, יצירת קבצי שמע של שאלות המבחן או קטעי טקסט להקראה, המקלים על תלמידים המתקשים בקריאה.",
-                pedagogicalTip: "השתמשו בכלי כדי ליצור חומרים מונגשים לתלמידים עם צרכים מיוחדים, או להקליט חומרי לימוד. מעולה להקראת בחינות בצורה ברורה וטבעית."
+                pedagogicalTip: "השתמשו בכלי כדי ליצור חומרים מונגשים לתלמידים עם צרכים מיוחדים, או להקליט חומרי לימוד. מעולה להקראת בחינות בצורה ברורה וטבעית.",
+                toolLink: "http://Play.ht",
+                recordedGuideLink: "https://www.youtube.com/watch?v=jcvLBB63uu4", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-play.ht והתחברו (ניתן באמצעות חשבון Google או מייל).</p>
+                    <p><strong>הזנת טקסט:</strong> הזינו את הטקסט שברצונכם להפוך לדיבור בשדה המתאים. ניתן להדביק טקסטים ארוכים כמו מבחנים.</p>
+                    <p><strong>בחירת קול והתאמה:</strong> בחרו את סוג הקול (שפה, מגדר, מבטא) והתאימו את מהירות הדיבור, ההגייה וההטעמה.</p>
+                    <p><strong>יצירת אודיו:</strong> לחצו על כפתור ה'יצירה' כדי להמיר את הטקסט לאודיו. תוכלו להאזין לתצוגה מקדימה.</p>
+                    <p><strong>הורדה:</strong> הורידו את קובץ האודיו (לרוב בפורמט MP3) ושמרו אותו לשימושכם (לדוגמה, להפעלה בכיתה או למבחן). ניתן לצרף את קובץ האודיו למבחן דיגיטלי.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל ובחרו "Sign out".</p>
+                `
             },
             {
                 name: "Gemini Storybook",
@@ -315,7 +730,17 @@
                 pricing: "חינם",
                 googleOrg: true,
                 lessonExample: "שיעור חינוך: יצירת סיפורים אישיים לילדים, יצירת ספרים דיגיטליים על נושאים כמו אלקטרוניקה, או שימוש בו ככלי להמחשה בשיעורים.",
-                pedagogicalTip: "עודדו את התלמידים ליצור סיפורים קצרים, להשתמש בו ככלי ללמד אותם מבנה עלילה ודמויות."
+                pedagogicalTip: "עודדו את התלמידים ליצור סיפורים קצרים, להשתמש בו ככלי ללמד אותם מבנה עלילה ודמויות.",
+                toolLink: "https://gemini.google/overview/storybook/", // Updated as per user's latest input
+                recordedGuideLink: "https://www.youtube.com/watch?v=JNu86SGfWLw&rco=1", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-gemini.google.com והתחברו עם חשבון Google שלכם.</p>
+                    <p><strong>הזנת פרומפט לסיפור:</strong> בשדה הצ'אט של ג'מיני, בקשו ממנו ליצור סיפור ילדים בנושא ספציפי (לדוגמה: "כתוב סיפור ילדים על חברות בין דובון צעצוע לילדה קטנה").</p>
+                    <p><strong>בקשת איורים:</strong> לאחר שהסיפור נוצר, בקשו מג'מיני ליצור איורים לכל עמוד/פסקת בסיפור (לדוגמה: "צור איור לעמוד הראשון של הסיפור: דובון קטן יושב לבדו על מדף").</p>
+                    <p><strong>בקשת הקראה (TTS):</strong> בקשו מג'מיני להקריא את הסיפור בקול (לדוגמה: "הקרא את הסיפור הזה בקול ילדותי").</p>
+                    <p><strong>שמירה/העתקה:</strong> העתיקו את הטקסט של הסיפור ואת התמונות שנוצרו לשימושכם.</p>
+                    <p><strong>התנתקות:</strong> יציאה מחשבון Google כולו.</p>
+                `
             },
             {
                 name: "Genspark",
@@ -324,7 +749,16 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור תנ\"ך: כלי עזר לחקר מידע, סיכום מהיר של נושאים, והשוואה בין מקורות.",
-                pedagogicalTip: "השתמשו בכלי זה כדי ללמד תלמידים כיצד לאסוף מידע בצורה יעילה וביקורתית."
+                pedagogicalTip: "השתמשו בכלי זה כדי ללמד תלמידים כיצד לאסוף מידע בצורה יעילה וביקורתית.",
+                toolLink: "https://www.genspark.ai/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=brhwxJOSEII", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-genspark.ai. אין צורך בהתחברות מיידית כדי לבצע חיפוש בסיסי.</p>
+                    <p><strong>הזנת שאילתה:</strong> הזינו את שאילתת החיפוש שלכם בשדה המתאים (לדוגמה: "מהם עקרונות הדמוקרטיה?").</p>
+                    <p><strong>צפייה בתוצאות:</strong> Genspark ייצר דף תוכן ייעודי עם סיכום המידע, מקורות ונושאים קשורים.</p>
+                    <p><strong>שימוש בתכונות מתקדמות:</strong> לחלק מהתכונות המתקדמות (כמו יצירת דפים מורכבים יותר או חיפוש מעמיק) ייתכן שתידרש הרשמה/תשלום.</p>
+                    <p><strong>התנתקות:</strong> אם התחברתם, לחצו על אייקון הפרופיל ובחרו "Sign out".</p>
+                `
             },
             {
                 name: "Napkin AI",
@@ -333,7 +767,17 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור ביולוגיה: יצירת מפות חשיבה לסיכומי שיעור, יצירת תרשימי זרימה לתהליכים שונים, ושיפור הבנת הנקרא.",
-                pedagogicalTip: "השתמשו בו כדי להמחיש את הקשר בין טקסט לתמונה וללמד על תיאוריית הקידוד הכפול."
+                pedagogicalTip: "השתמשו בו כדי להמחיש את הקשר בין טקסט לתמונה וללמד על תיאוריית הקידוד הכפול.",
+                toolLink: "https://www.napkin.ai/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=lDEiz4Jskbc", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-napkin.ai והתחברו לחשבון שלכם.</p>
+                    <p><strong>הזנת טקסט:</strong> הזינו את הטקסט שברצונכם להמיר לתצוגה חזותית. זה יכול להיות סיכום, רעיונות לסיעור מוחות, או פיסקה ממבחן.</p>
+                    <p><strong>בחירת סוג תצוגה:</strong> בחרו את סוג התצוגה החזותית הרצויה (מפת חשיבה, תרשים זרימה, אינפוגרפיקה).</p>
+                    <p><strong>עריכה והתאמה אישית:</strong> הכלי ייצר באופן אוטומטי את התצוגה. תוכלו לערוך, להוסיף ולשנות אלמנטים.</p>
+                    <p><strong>שמירה וייצוא:</strong> שמרו את התצוגה שנוצרה וייצאו אותה בפורמט הרצוי (לדוגמה, תמונה).</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל ובחרו "Sign out".</p>
+                `
             },
             {
                 name: "Plus AI",
@@ -342,7 +786,17 @@
                 pricing: "חינם ל-7 ימים ובתשלום (הנחה למחנכים)",
                 googleOrg: false,
                 lessonExample: "שיעור כימיה: יצירת מצגות מהירות על נושאים חדשים, ארגון חומר לימודי באופן ויזואלי, ויצירת שיעורים מתורגמים.",
-                pedagogicalTip: "כלי אידיאלי כדי ללמד תלמידים על עיצוב ויצירת מצגות יעילות."
+                pedagogicalTip: "כלי אידיאלי כדי ללמד תלמידים על עיצוב ויצירת מצגות יעילות.",
+                toolLink: "https://workspace.google.com/marketplace/app/plus_ai_for_google_slides_and_docs/214277172452",
+                recordedGuideLink: "https://www.youtube.com/watch?v=sXx98CpKR9w", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות והתקנה:</strong> Plus AI הוא תוסף (Add-on) ל-Google Slides או PowerPoint. התקינו אותו מחנות התוספים הרלוונטית.</p>
+                    <p><strong>התחלת מצגת:</strong> פתחו מצגת חדשה ב-Google Slides/PowerPoint.</p>
+                    <p><strong>שימוש ב-AI:</strong> חפשו את אייקון Plus AI בסרגל הכלים. לחצו עליו והזינו פרומפט טקסטואלי לגבי נושא המצגת או סוג השקופיות הרצוי.</p>
+                    <p><strong>עריכה והתאמה:</strong> ה-AI ייצר סקיצה של המצגת. תוכלו לערוך, לשנות ולשפר את התוכן והעיצוב.</p>
+                    <p><strong>שמירה:</strong> המצגת נשמרת אוטומטית ב-Google Drive או בתוכנה שבה אתם עובדים.</p>
+                    <p><strong>התנתקות:</strong> יציאה מחשבון Google/Microsoft שלכם.</p>
+                `
             },
             {
                 name: "Wondera (AI for Music)",
@@ -351,7 +805,17 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור מוזיקה: יצירת שירים מקוריים, יצירת פודקאסטים כיתתיים, או ככלי לימוד בשיעורי מוזיקה.",
-                pedagogicalTip: "עודדו תלמידים להשתמש בכלי זה כדי להמחיש יצירתיות, מוזיקליות ושימוש במחשב בשיעורי מוזיקה."
+                pedagogicalTip: "עודדו תלמידים להשתמש בכלי זה כדי להמחיש יצירתיות, מוזיקליות ושימוש במחשב בשיעורי מוזיקה.",
+                toolLink: "https://www.wondera.ai/", // Updated as per user's latest input
+                recordedGuideLink: null, // No new guide provided for Wondera (AI for Music)
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו לאפליקציית Wondera והתחברו.</p>
+                    <p><strong>הזנת פרומפט:</strong> בחרו באפשרות ליצירת מוזיקה והזינו פרומפט טקסטואלי המתאר את המוזיקה הרצויה (לדוגמה: "שיר רוק אנרגטי על חופש").</p>
+                    <p><strong>התאמה אישית:</strong> ניתן לבחור סגנונות מוזיקליים, כלי נגינה, קצב ועוד.</p>
+                    <p><strong>יצירה והאזנה:</strong> לחצו על כפתור היצירה והאזינו לתוצאה. ניתן לנסות פרומפטים שונים עד לקבלת התוצאה הרצויה.</p>
+                    <p><strong>שמירה/ייצוא:</strong> שמרו את היצירה שלכם או ייצאו אותה כקובץ אודיו.</p>
+                    <p><strong>התנתקות:</strong> יציאה מהאפליקציה.</p>
+                `
             },
             {
                 name: "Wondera (Fairy Tale Books)",
@@ -360,7 +824,16 @@
                 pricing: "חינם",
                 googleOrg: false,
                 lessonExample: "שיעור ספרות: יצירת ספרים דיגיטליים ואישיים, האזנה לסיפורים כדי ללמוד על דמויות ועלילה, ושימוש במדיטציות בשיעור.",
-                pedagogicalTip: "השתמשו בכלי זה כדי ללמד על מבנה סיפורי וכיצד לנתח טקסטים."
+                pedagogicalTip: "השתמשו בכלי זה כדי ללמד על מבנה סיפורי וכיצד לנתח טקסטים.",
+                toolLink: "https://www.wondera.ai/", // Updated as per user's latest input
+                recordedGuideLink: null, // No new guide provided for Wondera (Fairy Tale Books)
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו לאפליקציית Wondera (Fairy Tale Books) והתחברו.</p>
+                    <p><strong>בחירת סיפור/מדיטציה:</strong> דפדפו בין הסיפורים או המדיטציות הזמינות באפליקציה.</p>
+                    <p><strong>האזנה/קריאה:</strong> בחרו את הסיפור או המדיטציה שברצונכם להאזין להם או לקרוא אותם.</p>
+                    <p><strong>יצירת סיפורים (אם אפשרי):</strong> אם קיימת אפשרות ליצור סיפורים מותאמים אישית (ייתכן בגרסאות מתקדמות), השתמשו בפרומפטים ליצירה.</p>
+                    <p><strong>התנתקות:</strong> יציאה מהאפליקציה.</p>
+                `
             },
             {
                 name: "Wonder AI",
@@ -369,7 +842,16 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור אומנות: יצירת תמונות לנושאים היסטוריים או אמנותיים, ויצירת עיצובים שונים.",
-                pedagogicalTip: "כלי אידיאלי להדגמת השימוש ב-AI בעולם האמנות והעיצוב."
+                pedagogicalTip: "כלי אידיאלי להדגמת השימוש ב-AI בעולם האמנות והעיצוב.",
+                toolLink: "https://wonderai.app/", // Updated as per user's latest input
+                recordedGuideLink: "https://www.youtube.com/watch?v=ZHTrHV0iKcA", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> הורידו והתקינו את אפליקציית Wonder AI מחנות האפליקציות והתחברו.</p>
+                    <p><strong>הזנת טקסט:</strong> הזינו את התיאור של התמונה האמנותית שתרצו ליצור בשדה המתאים (לדוגמה: "יער קסום עם פטריות זוהרות בסגנון פנטזיה").</p>
+                    <p><strong>בחירת סגנון אמנותי:</strong> בחרו מתוך מגוון רחב של סגנונות אמנותיים (ציור שמן, ריאליזם, סייברפאנק ועוד).</p>
+                    <p><strong>יצירה ושמירה:</strong> לחצו על כפתור היצירה. האפליקציה תיצור מספר תמונות. בחרו את המועדפת ושמרו אותה למכשירכם.</p>
+                    <p><strong>התנתקות:</strong> יציאה מהאפליקציה.</p>
+                `
             },
             {
                 name: "Kling AI",
@@ -378,7 +860,12 @@
                 pricing: "בתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור פיזיקה: יצירת סרטוני הדמיה לתהליכים פיזיקליים, שימוש בכלי להמחשת נושאים מורכבים, או יצירת סרטוני אנימציה.",
-                pedagogicalTip: "עודדו תלמידים ללמוד על הפקת וידאו ושימוש בכלי AI מתקדמים."
+                pedagogicalTip: "עודדו תלמידים ללמוד על הפקת וידאו ושימוש בכלי AI מתקדמים.",
+                toolLink: "https://app.klingai.com/global/", // Updated as per user's latest input
+                recordedGuideLink: "https://www.youtube.com/watch?v=qDISly54cmI", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p>Kling AI הוא כלי מתקדם ליצירת וידאו מבוסס AI, המיועד בעיקר לשימושים מקצועיים ודרך פלטפורמות ספציפיות. ייתכן שאין ממשק משתמש ישיר ופשוט למורים ככלי עצמאי. אם תרצו להשתמש ביכולות דומות, חפשו כלים ליצירת וידאו מבוססי AI עם ממשק ידידותי יותר למשתמש, כמו HeyGen או Vids.</p>
+                `
             },
             {
                 name: "Wayground (לשעבר Quizizz)",
@@ -387,7 +874,18 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור היסטוריה: יצירת שאלונים מהירים למבחני ידע, הכנת שיעורים אינטראקטיביים, ושימוש בו ככלי להוראה מבדלת.",
-                pedagogicalTip: "כלי אידיאלי כדי להפוך את הלמידה לאינטראקטיבית ומהנה."
+                pedagogicalTip: "כלי אידיאלי כדי להפוך את הלמידה לאינטראקטיבית ומהנה.",
+                toolLink: "https://wayground.com/?lng=en", // Updated as per user's latest input
+                recordedGuideLink: "https://www.youtube.com/watch?v=YXnO0DDhbh4", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-wayground.com והתחברו (ניתן באמצעות חשבון Google או מייל).</p>
+                    <p><strong>יצירת חידון/שיעור:</strong> לחצו על 'צור' (Create) ובחרו אם ליצור חידון (Quiz), שיעור (Lesson) או פעילות אחרת.</p>
+                    <p><strong>שימוש ב-AI:</strong> הזינו את הנושא או הטקסט הרצוי. הכלי יציע שאלות או מבנה שיעור באמצעות AI.</p>
+                    <p><strong>התאמה אישית:</strong> ערכו, הוסיפו או הסירו שאלות, הוסיפו תמונות/סרטונים ועוד.</p>
+                    <p><strong>הפעלה ושיתוף:</strong> הפעילו את החידון בשידור חי בכיתה, או שלחו אותו כתלמיד עצמאי. שתפו את הקוד עם התלמידים.</p>
+                    <p><strong>מעקב וניתוח:</strong> עקבו אחר תוצאות התלמידים ונתחו את הביצועים.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל ובחרו "Sign out".</p>
+                `
             },
             {
                 name: "HeyGen (הייגן)",
@@ -396,7 +894,18 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור לשון: יצירת סרטוני הדרכה, הסברים על מושגים שונים, או הכנת שיעורים מונגשים.",
-                pedagogicalTip: "השתמשו בכלי זה כדי ללמד תלמידים על עולם הדיגיטל, קולנוע ועריכת סרטונים."
+                pedagogicalTip: "השתמשו בכלי זה כדי ללמד תלמידים על עולם הדיגיטל, קולנוע ועריכת סרטונים.",
+                toolLink: "https://www.heygen.com/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=iOvJ8NauAcI", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-heygen.com והתחברו לחשבון שלכם.</p>
+                    <p><strong>בחירת אוואטר:</strong> בחרו אוואטר וירטואלי שייצג אתכם או את הדמות הדוברת בסרטון.</p>
+                    <p><strong>הזנת טקסט:</strong> הזינו את התסריט או הטקסט שברצונכם שהאוואטר יקריא. ניתן גם להעלות קובץ אודיו.</p>
+                    <p><strong>התאמה אישית:</strong> התאימו את הרקע, סגנון הקול, מיקום האוואטר ועוד. הוסיפו אלמנטים ויזואליים.</p>
+                    <p><strong>יצירת וידאו:</strong> לחצו על כפתור ה'יצירה'. הכלי יפיק את הסרטון עם האוואטר המדבר.</p>
+                    <p><strong>הורדה/שיתוף:</strong> הורידו את הסרטון שנוצר או שתפו אותו ישירות.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל ובחרו "Sign out".</p>
+                `
             },
             {
                 name: "transcribe.ivrit.ai",
@@ -405,16 +914,35 @@
                 pricing: "חינם",
                 googleOrg: false,
                 lessonExample: "שיעור עברית: תמלול שיעורים מוקלטים, הקלטת פודקאסטים כיתתיים, או תרגול דיבור.",
-                pedagogicalTip: "השתמשו בכלי זה כדי ללמד תלמידים על מיומנות התמלול, דיבור ועברית מדוברת."
+                pedagogicalTip: "השתמשו בכלי זה כדי ללמד תלמידים על מיומנות התמלול, דיבור ועברית מדוברת.",
+                toolLink: "http://transcribe.ivrit.ai", // Updated as per user's latest input
+                recordedGuideLink: "https://www.youtube.com/watch?v=RLxwoxay_xY", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-transcribe.ivrit.ai. אין צורך בהתחברות.</p>
+                    <p><strong>העלאת קובץ:</strong> לחצו על כפתור 'העלה קובץ' (Upload File) ובחרו את קובץ האודיו בעברית שברצונכם לתמלל (לדוגמה: הקלטת שיעור, פודקאסט, דיבור תלמיד).</p>
+                    <p><strong>התחלת תמלול:</strong> המתינו שהמערכת תעבד את הקובץ ותציג את הטקסט המתומלל.</p>
+                    <p><strong>עריכה ושמירה:</strong> עברו על הטקסט המתומלל ותקנו שגיאות אם יש. ניתן להעתיק את הטקסט או להוריד אותו כקובץ.</p>
+                    <p><strong>התנתקות:</strong> אין צורך בהתנתקות מכיוון שאין מערכת משתמשים. פשוט סגרו את הדפדפן.</p>
+                `
             },
             {
                 name: "Websim.ai",
                 description: "כלי המיועד ללמידה ופיתוח של מודלי AI. מאפשר יצירה מהירה של משחקים לימודיים, סימולציות ויישומים אינטראקטיביים ללא צורך בידע קודם בתכנות.",
-                categories: ["טכנולוגיית AI", "בניית אפליקציות ללא קוד", "סימולציה ומשחקים"],
+                categories: ["טכנופדגוגיה", "בניית אפליקציות ללא קוד", "סימולציה ומשחקים"],
                 pricing: "חינם",
                 googleOrg: false,
                 lessonExample: "שיעור מתמטיקה: יצירת משחק אינטראקטיבי המאפשר לתלמידים לתרגל פתרון משוואות לינאריות, כאשר כל פתרון נכון מוביל לשלב הבא. הכלי יכול לספק משוב מיידי שיסייע לתלמידים להבין היכן טעו. שיעור יזמות: תכנון ויצירת אבטיפוס לאפליקציית משחק חינוכית.",
-                pedagogicalTip: "עודדו תלמידים לעצב בעצמם משחקים וסימולציות. זהו פרויקט אידיאלי לסוף יחידת לימוד, שבו התלמידים מסכמים את החומר על ידי יצירת משחק לימודי לאחרים. מעולה לפיתוח אפליקציות פשוטות."
+                pedagogicalTip: "עודדו תלמידים לעצב בעצמם משחקים וסימולציות. זהו פרויקט אידיאלי לסוף יחידת לימוד, שבו התלמידים מסכמים את החומר על ידי יצירת משחק לימודי לאחרים. מעולה לפיתוח אפליקציות פשוטות.",
+                toolLink: "http://Websim.ai", // Updated as per user's latest input
+                recordedGuideLink: "https://www.youtube.com/watch?v=Hu9IDpZbiFM", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-websim.ai והתחברו לחשבון שלכם.</p>
+                    <p><strong>יצירת פרויקט חדש:</strong> לחצו על 'Create New Project' או 'Start Building'.</p>
+                    <p><strong>בחירת תבנית/בנייה:</strong> בחרו תבנית למשחק או סימולציה, או התחילו לבנות מאפס באמצעות כלי ה-No-Code המבוססים על AI.</p>
+                    <p><strong>הזנת היגיון ונתונים:</strong> הזינו את ההיגיון של המשחק או הסימולציה בשפה טבעית. הכלי יתרגם זאת לקוד אוטומטי.</p>
+                    <p><strong>בדיקה ופרסום:</strong> בדקו את היישום שלכם ופרסמו אותו כדי שיוכלו להשתמש בו.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל או התפריט ובחרו "Sign out".</p>
+                `
             },
             {
                 name: "Vidu AI",
@@ -423,7 +951,17 @@
                 pricing: "חינם",
                 googleOrg: false,
                 lessonExample: "שיעור אומנות: יצירת סרטונים קצרים על נושאים שונים, או שימוש בכלי כדי ליצור מצגות דינמיות.",
-                pedagogicalTip: "עודדו תלמידים להשתמש בכלי זה כדי ללמוד על הפקת וידאו."
+                pedagogicalTip: "עודדו תלמידים להשתמש בכלי זה כדי ללמוד על הפקת וידאו.",
+                toolLink: "https://www.vidu.com/", // Updated as per user's latest input
+                recordedGuideLink: "https://www.youtube.com/watch?v=hYATYGUq3XU", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-vidu.ai והתחברו (ניתן באמצעות חשבון Google או מייל).</p>
+                    <p><strong>הזנת טקסט/תמונות:</strong> הזינו את התסריט הטקסטואלי לסרטון, או העלו תמונות שמהן תרצו ליצור סרטון.</p>
+                    <p><strong>בחירת סגנון/קול:</strong> בחרו את סגנון הוידאו, הוסיפו מוזיקת רקע ובחרו קול קריינות (אם רלוונטי).</p>
+                    <p><strong>יצירת וידאו:</strong> לחצו על כפתור ה'יצירה'. הכלי יפיק את הסרטון בהתבסס על הקלט שלכם.</p>
+                    <p><strong>עריכה והורדה:</strong> עברו על הסרטון, בצעו עריכות קלות אם צריך, והורידו אותו למכשירכם.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל ובחרו "Sign out".</p>
+                `
             },
             {
                 name: "Vids",
@@ -432,7 +970,17 @@
                 pricing: "בתשלום",
                 googleOrg: true,
                 lessonExample: "שיעור יזמות: יצירת סרטוני הדרכה, שיעורים מוקלטים או סרטונים על פרויקטים כיתתיים.",
-                pedagogicalTip: "כלי אידיאלי כדי ללמד תלמידים על הפקת וידאו ושיתוף פעולה."
+                pedagogicalTip: "כלי אידיאלי כדי ללמד תלמידים על הפקת וידאו ושיתוף פעולה.",
+                toolLink: "https://workspace.google.com/intl/iw/products/vids/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=b1nvI8phAjs", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> Vids הוא חלק מ-Google Workspace. התחברו לחשבון Google Workspace הארגוני שלכם.</p>
+                    <p><strong>התחלת פרויקט:</strong> נווטו ל-Google Drive או ליישום Workspace אחר וחפשו אפשרות ליצירת פרויקט Vids חדש. (ייתכן שיהיה זמין בתפריט 'חדש' או בתוך אפליקציות כמו Docs/Slides).</p>
+                    <p><strong>יצירת וידאו עם AI:</strong> הזינו את הרעיון או התסריט שלכם. Vids ישתמש ב-AI כדי ליצור טיוטה ראשונית של הסרטון, כולל ויזואליים, מוזיקה וקריינות.</p>
+                    <p><strong>עריכה ושיתוף פעולה:</strong> ערכו את הסרטון, הוסיפו קטעים, טקסט, אפקטים ועוד. ניתן לעבוד בשיתוף פעולה עם תלמידים ועמיתים.</p>
+                    <p><strong>שמירה וייצוא:</strong> שמרו את הסרטון ב-Google Drive וייצאו אותו בפורמט הרצוי.</p>
+                    <p><strong>התנתקות:</strong> יציאה מחשבון Google Workspace שלכם.</p>
+                `
             },
             {
                 name: "Timeos",
@@ -441,7 +989,16 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור ניהול פרויקטים: שימוש בכלי כדי לסכם שיחות עם תלמידים או הורים, או שיעורים מוקלטים.",
-                pedagogicalTip: "כלי מצוין כדי ללמד על מיומנויות ארגון וסיכום."
+                pedagogicalTip: "כלי מצוין כדי ללמד על מיומנויות ארגון וסיכום.",
+                toolLink: "https://www.timeos.ai/",
+                recordedGuideLink: "https://www.youtube.com/watch?v=kIAiGIUcaPE", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-timeos.ai והתחברו לחשבון שלכם.</p>
+                    <p><strong>העלאת הקלטה:</strong> העלו קובץ אודיו של פגישה, הרצאה או שיעור מוקלט.</p>
+                    <p><strong>תמלול וסיכום:</strong> המתינו שהכלי יתמלל את ההקלטה ויפיק סיכום אוטומטי של עיקרי הדברים, נקודות פעולה ונושאים מרכזיים.</p>
+                    <p><strong>עריכה ושיתוף:</strong> עברו על התמלול והסיכום, ערכו אם צריך, ושתפו אותם עם המשתתפים או התלמידים.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל או התפריט ובחרו "Sign out".</p>
+                `
             },
             {
                 name: "Flux AI",
@@ -450,7 +1007,12 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור עיצוב: יצירת תמונות מורכבות למצגות, או שימוש בכלי לשיעורי אמנות.",
-                pedagogicalTip: "השתמשו בכלי זה כדי ללמד על יצירתיות ודיוק בשימוש ב-AI."
+                pedagogicalTip: "השתמשו בכלי זה כדי ללמד על יצירתיות ודיוק בשימוש ב-AI.",
+                toolLink: "https://www.flux.ai/p", // Updated as per user's latest input
+                recordedGuideLink: "https://www.youtube.com/watch?v=ZL9KV-RT-cw", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p>Flux AI הוא כלי ליצירת תמונות מבוסס AI, אשר זמין ככל הנראה דרך פלטפורמות מסוימות או פיתוחים ספציפיים. אין ממשק משתמש ישיר ופשוט למורים ככלי עצמאי באופן נרחב. אם תרצו להשתמש ביכולות דומות, חפשו כלים ליצירת תמונות מבוססי AI עם ממשק ידידותי יותר למשתמש כמו DALL-E 3, Midjourney, או Ideogram.</p>
+                `
             },
             {
                 name: "Google Contacts",
@@ -459,25 +1021,53 @@
                 pricing: "חינם",
                 googleOrg: true,
                 lessonExample: "שיעור מנהלתי: ניהול אנשי הקשר של בית הספר, יצירת קבוצות תלמידים.",
-                pedagogicalTip: "כלי בסיסי ושימושי לניהול קשרים."
+                pedagogicalTip: "כלי בסיסי ושימושי לניהול קשרים.",
+                toolLink: "https://contacts.google.com/",
+                recordedGuideLink: null,
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-contacts.google.com והתחברו עם חשבון Google שלכם.</p>
+                    <p><strong>הוספת איש קשר:</strong> לחצו על כפתור 'יצירת איש קשר' או 'צור קשר' והזינו את פרטי איש הקשר.</p>
+                    <p><strong>יצירת קבוצה/תווית:</strong> כדי לארגן אנשי קשר, צרו תוויות (Labels) או קבוצות תלמידים/הורים.</p>
+                    <p><strong>חיפוש ועריכה:</strong> חפשו אנשי קשר קיימים וערכו את פרטיהם בקלות.</p>
+                    <p><strong>התנתקות:</strong> יציאה מחשבון Google כולו.</p>
+                `
             },
             {
                 name: "Base44",
                 description: "פלטפורמת פיתוח אפליקציות מלאה (Full-stack) המופעלת על ידי AI, המאפשרת בניית אפליקציות ואתרים ללא צורך בקוד, באמצעות הנחיות בשפה טבעית. מתמקדת באוטומציה של פיתוח Frontend, Backend ובסיסי נתונים. נרכשה על ידי Wix.",
-                categories: ["בניית אפליקציות ללא קוד", "טכנולוגיית AI"],
+                categories: ["בניית אפליקציות ללא קוד", "טכנופדגוגיה"],
                 pricing: "חינם ובתשלום (מערכת קרדיטים)",
                 googleOrg: false,
                 lessonExample: "שיעור תכנות/יזמות: תלמידים יכולים לתאר רעיון לאפליקציה פשוטה (לדוגמה, אפליקציית ניהול משימות לכיתה), ו-Base44 תייצר את הבסיס שלה. זה מאפשר למידה מעשית של תהליך הפיתוח מבלי צורך בידע קוד.",
-                pedagogicalTip: "השתמשו בכלי זה כדי להדגים איך בינה מלאכותית יכולה להאיץ פיתוח, ולעורר עניין בקרב תלמידים בתחום היזמות הטכנולוגית וה-No-Code."
+                pedagogicalTip: "השתמשו בכלי זה כדי להדגים איך בינה מלאכותית יכולה להאיץ פיתוח, ולעורר עניין בקרב תלמידים בתחום היזמות הטכנולוגית וה-No-Code.",
+                toolLink: "https://base44.com/", // Updated as per user's latest input
+                recordedGuideLink: "https://www.youtube.com/watch?v=0ucurKsWRV8", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו לאתר Base44 (או Wix Studio, שבו היא משולבת) והתחברו.</p>
+                    <p><strong>התחלת פרויקט:</strong> התחילו פרויקט חדש ובחרו באפשרות של יצירה באמצעות AI או הזנת טקסט.</p>
+                    <p><strong>הזנת תיאור:</strong> תארו את האפליקציה או האתר שברצונכם לבנות בשפה טבעית (לדוגמה: "בנה אפליקציה לניהול משימות עם רשימות ניתנות לסימון").</p>
+                    <p><strong>עריכה והתאמה:</strong> Base44 תיצור סקיצה ראשונית. תוכלו לערוך את הרכיבים, הפונקציונליות והעיצוב באמצעות ממשק ה-No-Code.</p>
+                    <p><strong>פרסום:</strong> פרסמו את האפליקציה או האתר שלכם כדי שיהיו זמינים לשימוש.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל ובחרו "Sign out".</p>
+                `
             },
             {
                 name: "Gemini Guide Learning",
                 description: "פיצ'ר למידה אינטראקטיבי בתוך סביבת Gemini, המאפשר חווית למידה מותאמת אישית. משמש כמדריך למידה אישי המבוסס AI, המסייע בתרגול, הסברים וחידוד הבנה במגוון נושאים.",
-                categories: ["טכנולוגיית AI", "צ'אטבוט/סייען AI"],
+                categories: ["טכנופדגוגיה", "צ'אטבוט/סייען AI"],
                 pricing: "חינם",
                 googleOrg: true,
                 lessonExample: "שיעור חינוך: שימוש ב-Gemini Guide Learning כסייען למידה אישי לתלמידים, שיכול לעזור להם להבין נושאים מורכבים, לתרגל חומר לימוד, או לקבל משוב מיידי על שאלות. **שיעור מדעים**: תלמיד יכול לבקש מג'מיני להסביר מושג בפיזיקה, ולאחר מכן לבחון את הבנתו באמצעות שאלות תרגול שה-AI יספק.",
-                pedagogicalTip: "עודדו תלמידים להשתמש ב-Gemini Guide Learning כדי לקחת אחריות על תהליך הלמידה שלהם, לבחון את הידע שלהם ולקבל תמיכה מותאמת אישית. זהו כלי מעולה ללמידה עצמית ודיפרנציאלית."
+                pedagogicalTip: "עודדו תלמידים להשתמש ב-Gemini Guide Learning כדי לקחת אחריות על תהליך הלמידה שלהם, לבחון את הידע שלהם ולקבל תמיכה מותאמת אישית. זהו כלי מעולה ללמידה עצמית ודיפרנציאלית.",
+                toolLink: "https://gemini.google.com/", // Retained generic Gemini link as it's a feature within it
+                recordedGuideLink: "https://www.youtube.com/watch?v=4ErM2corKFQ", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-gemini.google.com והתחברו עם חשבון Google שלכם.</p>
+                    <p><strong>בקשת מדריך למידה:</strong> בשדה הצ'אט, בקשו מג'מיני לשמש כמדריך למידה בנושא מסוים (לדוגמה: "אני רוצה ללמוד על מחזור המים, תהיה המדריך שלי").</p>
+                    <p><strong>אינטראקציה ותרגול:</strong> ג'מיני יציג מידע, ישאל שאלות, יספק הסברים ויציע תרגילים לחידוד ההבנה. עקבו אחר ההנחיות והגיבו.</p>
+                    <p><strong>משוב:</strong> ג'מיני יספק משוב על תשובותיכם ויסייע בתיקון טעויות.</p>
+                    <p><strong>התנתקות:</strong> יציאה מחשבון Google כולו.</p>
+                `
             },
             {
                 name: "Suno",
@@ -486,17 +1076,26 @@
                 pricing: "חינם ובתשלום",
                 googleOrg: false,
                 lessonExample: "שיעור מוזיקה: תלמידים יכולים ליצור פסקול מקורי לסיפור קצר שכתבו בשיעור ספרות, או להלחין שיר על אירוע היסטורי, תוך שימוש בפרומפט טקסטואלי בלבד.",
-                pedagogicalTip: "עודדו את התלמידים להתנסות בז'אנרים מוזיקליים שונים ולנתח כיצד שינויים בפרומפט משפיעים על התוצאה המוזיקלית. זה מפתח יצירתיות, הבנה מוזיקלית ויכולת ניסוח."
+                pedagogicalTip: "עודדו את התלמידים להתנסות בז'אנרים מוזיקליים שונים ולנתח כיצד שינויים בפרומפט משפיעים על התוצאה המוזיקלית. זה מפתח יצירתיות, הבנה מוזיקלית ויכולת ניסוח.",
+                toolLink: "https://suno.com/home", // Updated as per user's latest input
+                recordedGuideLink: "https://www.youtube.com/watch?v=nXeqBdmohyI", // Updated as per user's latest input
+                stepByStepGuide: `
+                    <p><strong>התחברות:</strong> היכנסו ל-suno.ai והתחברו (ניתן באמצעות חשבון Google או Discord).</p>
+                    <p><strong>הזנת פרומפט:</strong> בשדה הטקסט, הזינו את התיאור של השיר שתרצו ליצור (לדוגמה: "שיר פופ קליט על קיץ ואהבה ראשונה").</p>
+                    <p><strong>יצירה והאזנה:</strong> לחצו על כפתור היצירה. Suno ייצר שיר מלא עם מילים ומוזיקה. תוכלו להאזין לו ולבחור גרסאות שונות.</p>
+                    <p><strong>שמירה/ייצוא:</strong> שמרו את השיר שנוצר או ייצאו אותו כקובץ אודיו.</p>
+                    <p><strong>התנתקות:</strong> לחצו על אייקון הפרופיל או התפריט ובחרו "Sign out".</p>
+                `
             }
         ];
 
         // פונקציה לקבלת דרגת עדיפות למיון
         function getPriority(tool) {
-            // Priority 0: Canvas Gemini (explicitly requested to be first)
+            // Priority -1: Canvas Gemini (explicitly requested to be first)
             if (tool.name === "Canvas Gemini") {
                 return -1;
             }
-            // Priority 0.5: Google Classroom (explicitly requested and is Google + free)
+            // Priority -0.5: Google Classroom (explicitly requested and is Google + free)
             if (tool.name === "Google Classroom") {
                 return -0.5;
             }
@@ -563,7 +1162,7 @@
                 const categoryBadges = tool.categories.map(cat => `<span class="category-badge">${cat}</span>`).join('');
                 
                 const toolCard = `
-                    <div class="tool-card ${cardClass} p-6 border rounded-xl flex flex-col justify-between">
+                    <div class="tool-card ${cardClass} p-6 border rounded-xl flex flex-col justify-between" data-tool-name="${tool.name}">
                         <div>
                             <h3 class="text-2xl font-semibold mb-2 text-gray-900">${tool.name}</h3>
                             <div class="mb-4 text-gray-600">
@@ -580,7 +1179,65 @@
                 `;
                 container.innerHTML += toolCard;
             });
+            addCardClickListeners(); // Add listeners after cards are rendered
         }
+
+        // Modal elements
+        const toolGuideModal = document.getElementById('tool-guide-modal');
+        const closeModalButton = document.getElementById('close-modal-button');
+        const modalToolName = document.getElementById('modal-tool-name');
+        const modalStepByStepGuide = document.getElementById('modal-step-by-step-guide');
+        const modalToolLink = document.getElementById('modal-tool-link');
+        const modalRecordedGuideLink = document.getElementById('modal-recorded-guide-link');
+        const modalNoRecordedGuideMessage = document.getElementById('modal-no-recorded-guide-message');
+
+        // Function to open the modal with specific tool data
+        function openToolGuideModal(tool) {
+            modalToolName.textContent = tool.name;
+            modalStepByStepGuide.innerHTML = tool.stepByStepGuide;
+            modalToolLink.href = tool.toolLink || '#';
+            modalToolLink.textContent = `מעבר לכלי: ${tool.name}`;
+
+            if (tool.recordedGuideLink) {
+                modalRecordedGuideLink.href = tool.recordedGuideLink;
+                modalRecordedGuideLink.style.display = 'block';
+                modalNoRecordedGuideMessage.style.display = 'none';
+            } else {
+                modalRecordedGuideLink.href = '#';
+                modalRecordedGuideLink.style.display = 'none';
+                modalNoRecordedGuideMessage.style.display = 'block';
+            }
+            toolGuideModal.classList.remove('hidden');
+        }
+
+        // Function to close the modal
+        function closeToolGuideModal() {
+            toolGuideModal.classList.add('hidden');
+        }
+
+        // Event listener for closing the modal
+        closeModalButton.addEventListener('click', closeToolGuideModal);
+        toolGuideModal.addEventListener('click', (event) => {
+            if (event.target === toolGuideModal) { // Close if clicked on overlay, not content
+                closeToolGuideModal();
+            }
+        });
+
+        // Add click listeners to tool cards using event delegation
+        function addCardClickListeners() {
+            const toolsContainer = document.getElementById('tools-container');
+            toolsContainer.addEventListener('click', (event) => {
+                const clickedCard = event.target.closest('.tool-card');
+                if (clickedCard) {
+                    const toolName = clickedCard.dataset.toolName;
+                    const selectedTool = toolsData.find(tool => tool.name === toolName);
+                    if (selectedTool) {
+                        openToolGuideModal(selectedTool);
+                    }
+                }
+            });
+        }
+
 
         // מילוי ה-dropdown בקטגוריות ייחודיות
         const categorySelect = document.getElementById('category-select');
@@ -617,8 +1274,24 @@
         // האזנה לשינויים ב-dropdown
         categorySelect.addEventListener('change', filterTools);
 
+        // פונקציות לטעינה/הצגה של התוכן הראשי או דף הקישורים המעולים
+        const mainContentDiv = document.getElementById('main-content');
+        const excellentLinksPageDiv = document.getElementById('excellent-links-page');
+
+        function showMainContent() {
+            mainContentDiv.style.display = 'block';
+            excellentLinksPageDiv.style.display = 'none';
+        }
+
+        function loadExcellentLinks() {
+            mainContentDiv.style.display = 'none';
+            excellentLinksPageDiv.style.display = 'block';
+        }
+
         // הצג את כל הכלים בטעינת הדף הראשונית
         filterTools();
+        // וודא שהתוכן הראשי מוצג בהתחלה
+        showMainContent();
     </script>
 </body>
 </html>
